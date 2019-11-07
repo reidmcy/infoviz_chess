@@ -2,6 +2,7 @@ import flask
 import flask_assets
 
 import os.path
+import sys
 
 app = flask.Flask('Chess')
 assets = flask_assets.Environment(app)
@@ -21,7 +22,7 @@ def favicon():
     return flask.send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 if __name__ == '__main__':
-    if sys.platform == '':
+    if sys.platform == 'linux':
         app.run(host='haibridgpu2.eastus2.cloudapp.azure.com', debug=False, port=8801)
     else:
         app.run(debug=True)
