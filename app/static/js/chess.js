@@ -59,61 +59,6 @@ var tooltip = d3
   .style("visibility", "hidden");
 //   .text("I'm a circle!");
 
-
-var treedat = {
-    "name": "Top Level",
-    "parent": "null",
-    "children": [
-      {
-        "name": "Level 2: A",
-        "parent": "Top Level",
-        "children": [
-          {
-            "name": "Son of A",
-            "parent": "Level 2: A"
-          },
-          {
-            "name": "Daughter of A",
-            "parent": "Level 2: A"
-		  }
-        ]
-      },
-      {
-        "name": "Level 2: B",
-        "parent": "Top Level",
-	  "children":[
-		  {
-			"name": "test 1",
-            "parent": "Level 2: B"
-		  },
-		  {
-			"name": "test 2",
-			"parent": "Level 2: B",
-			"children":[
-				{
-					"name": "test 21",
-					"parent": "test 2",
-				},
-				{
-					"name": "test 22",
-					"parent": "test 2"
-				}
-				,{
-					"name": "test 23",
-					"parent": "test 2"
-				}
-			]
-		  }
-	  	]
-		},
-    ]
-  };
-
-
-
-
-
-
 function dist2(a, b) {
   return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2;
 }
@@ -199,6 +144,9 @@ function draw_tree(root) {
                   "node name: " +
                   d.name +
                   "<br>" +
+                  "Number of children: " +
+                  (d._children ? Object.keys(d._children).length : 0) +
+                  "<br>" +
                   "..."
               )
               .style("visibility", "visible");
@@ -244,7 +192,9 @@ function draw_tree(root) {
         .attr("width", rectW)
         .attr("height", rectH)
         .attr("stroke", "black")
-        .attr("stroke-width", 1)
+        .attr("stroke-width", function(d) { //doesn't seem to do anything
+                (d._children ? Object.keys(d._children).length + 1 : 1)
+        })
         .style("fill", function(d) {
           return d._children ? "lightsteelblue" : "#fff";
         });
@@ -256,7 +206,11 @@ function draw_tree(root) {
         .attr("dy", ".35em")
         .attr("text-anchor", "middle")
         .text(function(d) {
-          return d.name;
+            if (d._children && Object.keys(d._children).length > 0) {
+                return d.name + ' (' + Object.keys(d._children).length + ')';
+            } else {
+                return  d.name;
+            }
         });
 
       // Transition nodes to their new position.
@@ -366,14 +320,9 @@ function draw_tree(root) {
       }
       update(d);
     }
-
-
     update(root);
     d3.select(self.frameElement).style("height", "800px");
 }
-
-
-
 
 d3.json("/static/js/tree.json", function(data) {
     draw_tree(data[0]);
