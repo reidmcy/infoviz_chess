@@ -8,7 +8,10 @@ app = flask.Flask('Chess')
 assets = flask_assets.Environment(app)
 
 css_bundle = flask_assets.Bundle('css/chess.css')
-js_bundle = flask_assets.Bundle('js/chess.css')
+js_bundle = flask_assets.Bundle(
+                    'js/chess.css',
+                    'js/tree.json',
+                    )
 
 assets.register('js_all', js_bundle)
 assets.register('css_all', css_bundle)
