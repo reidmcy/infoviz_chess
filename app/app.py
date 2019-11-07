@@ -23,6 +23,6 @@ def favicon():
 
 if __name__ == '__main__':
     if sys.platform == 'linux':
-        app.run(host='haibridgpu2.eastus2.cloudapp.azure.com', debug=False, port=8801)
+        app.run(host='0.0.0.0', debug=False, port=8801)
     else:
         app.run(debug=True)
