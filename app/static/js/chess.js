@@ -323,6 +323,6 @@ function draw_tree(root) {
     d3.select(self.frameElement).style("height", "800px");
 }
 
-d3.json("/static/js/tree.json", function(data) {
+d3.json("/static/js/board_dat.json", function(data) {
     draw_tree(data[0]);
 });
