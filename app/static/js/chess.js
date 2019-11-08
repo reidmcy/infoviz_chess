@@ -99,6 +99,25 @@ function redraw() {
   );
 }
 
+function draw_node(node){
+    node.append("rect")
+      .attr("width", rectW)
+      .attr("height", rectH)
+      .attr("stroke", "black")
+      .attr("stroke-width", 1)
+      //.attr("stroke-width", function(d) { //doesn't seem to do anything
+      //     (d._children ? Object.keys(d._children).length + 1 : 1)
+      // })
+      .style("fill", function(d) {
+          if (d.primary) {
+              return "darkred";
+          } else {
+              return d._children ? "lightsteelblue" : "#fff";
+          }
+
+      });
+}
+
 function draw_tree(root) {
     root.x0 = 0;
     root.y0 = height / 2;
@@ -144,6 +163,9 @@ function draw_tree(root) {
                   "node name: " +
                   d.name +
                   "<br>" +
+                  "Is main line: " +
+                  d.primary +
+                  "<br>" +
                   "Number of children: " +
                   (d._children ? Object.keys(d._children).length : 0) +
                   "<br>" +
@@ -186,17 +208,7 @@ function draw_tree(root) {
           }
         });
 
-      nodeEnter
-        .append("rect")
-        .attr("width", rectW)
-        .attr("height", rectH)
-        .attr("stroke", "black")
-        .attr("stroke-width", function(d) { //doesn't seem to do anything
-                (d._children ? Object.keys(d._children).length + 1 : 1)
-        })
-        .style("fill", function(d) {
-          return d._children ? "lightsteelblue" : "#fff";
-        });
+      draw_node(nodeEnter)
 
       nodeEnter
         .append("text")
@@ -221,15 +233,7 @@ function draw_tree(root) {
           return "translate(" + d.x + "," + d.y + ")";
         });
 
-      nodeUpdate
-        .select("rect")
-        .attr("width", rectW)
-        .attr("height", rectH)
-        .attr("stroke", "black")
-        .attr("stroke-width", 1)
-        .style("fill", function(d) {
-          return d._children ? "lightsteelblue" : "#fff";
-        });
+      //draw_node(nodeUpdate)
 
       nodeUpdate.select("text").style("fill-opacity", 1);
 
