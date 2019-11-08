@@ -150,7 +150,6 @@ function draw_tree(root) {
                   "..."
               )
               .style("visibility", "visible");
-            console.log(d.name)
             var board1 = Chessboard('board', d.fen)
             //reset all the data to have color undefined.
             // flatten(root).forEach(function(d) {
