@@ -3,18 +3,24 @@ import flask_assets
 
 import os.path
 import sys
+import glob
 
 app = flask.Flask('Chess')
 assets = flask_assets.Environment(app)
 
-css_bundle = flask_assets.Bundle('css/chess.css')
+css_bundle = flask_assets.Bundle(
+                    'css/chess.css',
+                    'css/chessboard-1.0.0.css'
+                    )
 js_bundle = flask_assets.Bundle(
                     'js/chess.css',
                     'js/tree.json',
+                    'js/chessboard-1.0.0.js',
                     )
-
+img_bundel = flask_assets.Bundle('img/chesspieces/')
 assets.register('js_all', js_bundle)
 assets.register('css_all', css_bundle)
+assets.register('img_all', img_bundel)
 
 @app.route("/")
 def home():

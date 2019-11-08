@@ -4,7 +4,9 @@
     <meta charset="utf-8">
 
     <title>Chess Move Trees</title>
-    <link rel = "stylesheet" type = "text/css" href = "/static/css/chess.css" /></head>
+    <link rel = "stylesheet" type = "text/css" href = "/static/css/chess.css" />
+    <link rel = "stylesheet" type = "text/css" href = "/static/css/chessboard-1.0.0.css" />
+</head>
 
   </head>
 
@@ -15,15 +17,17 @@
           </div>
           <div class="column" id="info_part" style="background-color:#C2B4D6;">
             <h2 align="center"> Node Info</h2>
+            <div id="board" style="width: 400px"></div>
             <!-- <p> Some attributes ... </p> -->
           </div>
+
         </div>
 
   <!-- load the d3.js library -->
-
   <script src="http://underscorejs.org/underscore-min.js"></script>
   <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="/static/js/chessboard-1.0.0.js"></script>
   <script src="/static/js/chess.js"></script>
 
   </body>
