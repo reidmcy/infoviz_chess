@@ -43,6 +43,15 @@ var svg = d3
 //necessary so that zoom knows where to zoom and unzoom from
 zm.translate([350, 20]);
 
+function shrink(d) {
+    if (d.children) {
+      d._children = d.children;
+      d.shrunk_children = d.children;
+      d._children.forEach(collapse);
+      d.children = null;
+    }
+}
+
 function collapse(d) {
   if (d.children) {
     d._children = d.children;
