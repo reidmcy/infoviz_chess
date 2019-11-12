@@ -183,7 +183,7 @@ function draw_tree(root) {
             //iterate over the selected node and set color as red.
             //till it reaches the root
             while (d.parent) {
-              d.color = "#08306b";
+              d.color = "darkred";
               d = d.parent;
             }
 
