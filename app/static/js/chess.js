@@ -119,7 +119,7 @@ function draw_node(node){
       // })
       .style("fill", function(d) {
           if (d.primary) {
-              return "darkred";
+              return "#08306b";
           } else {
               return d._children ? "lightsteelblue" : "#fff";
           }
@@ -183,7 +183,7 @@ function draw_tree(root) {
             //iterate over the selected node and set color as red.
             //till it reaches the root
             while (d.parent) {
-              d.color = "red";
+              d.color = "#08306b";
               d = d.parent;
             }
 
