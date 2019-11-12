@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Chess Move Trees</title>
+    <link rel = "stylesheet" type = "text/css" href = "/app/static/css/chess.css" />
+    <link rel = "stylesheet" type = "text/css" href = "/app/static/css/chessboard-1.0.0.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+  </head>
+
+  <body>
+
+      <div class="row">
+          <div class="column" id="tree_part" style="background-color:#E5E5E5;">
+          </div>
+          <div class="column" id="info_part" style="background-color:#C2B4D6;">
+            <h2 align="center"> Node Info</h2>
+            <div id="board"></div>
+          </div>
+
+        </div>
+
+        <nav role="navigation" >
+            <div id="menuToggle" class="my-legend">
+            <div class="legend-scale" >
+              <input type="checkbox" />
+              <span></span>
+              <span></span>
+              <span></span>
+
+              <ul class="legend-labels" id="menu">
+                  <li><span style="background:#08306b;"></span> 1st best move</li>
+                  <li><span style="background:#0a4a90;"></span>2nd best move</li>
+                  <li><span style="background:#1864aa;"></span>3rd best move</li>
+                  <li><span style="background:#2f7ebc;"></span>4th best move</li>
+                  <li><span style="background:#4b97c9;"></span>etc</li>
+                  <li><span style="background:#6daed5;"></span>etc</li>
+                  <li><span style="background:#93c3df;"></span>etc</li>
+                  <li><span style="background:#b5d4e9;"></span>etc</li>
+                  <li><span style="background:#cfe1f2;"></span>etc</li>
+                  <li><span style="background:#e3eef9;"></span>etc</li>
+                  <li><span style="background:#f7fbff;"></span>etc</li>
+                
+              </ul>
+            </div>
+          </div>
+          </nav>
+  <!-- load the d3.js library -->
+  <script src="http://underscorejs.org/underscore-min.js"></script>
+  <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="/app/static/js/chessboard-1.0.0.js"></script>
+  <!-- <script src="/static/js/stockfish/stockfish.js"></script> causes 100% CPU usage-->
+  <script src="/app/static/js/chess.js"></script>
+
+  </body>
+</html>
