@@ -1,4 +1,4 @@
-
+//All the functions are in chess_utils
 
 // Size of window
 var margin = {
@@ -19,7 +19,6 @@ rectH = 30;
 node_seperationW = rectW + 10;
 node_seperationH = rectH + 10;
 background_colour = "#gray"
-
 
 //D3 stuff
 var flag_mouse = false;

@@ -82,7 +82,199 @@ function draw_node(node){
       });
 }
 
+// Toggle children on click.
+function click(d, root) {
+  flag_mouse = true;
+  if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  } else {
+    d.children = d._children;
+    d._children = null;
+  }
+  update(d, root);
+}
 
+function update(source, root) {
+  // Compute the new tree layout.
+  var nodes = tree.nodes(root).reverse(), // Runs the tree layout, returning the array of nodes associated with the specified root node
+    links = tree.links(nodes);
+  // Normalize for fixed-depth.
+  nodes.forEach(function(d) {
+    d.y = d.depth * 100;
+  });
+
+  // Update the nodes…
+  var node = svg.selectAll("g.node").data(nodes, function(d) {
+    // We then declare the variable / function node so that when we call it
+    // later it will know to select the appropriate object (a node) with the appropriate .id
+    return d.id || (d.id = ++i);
+  });
+
+  // Enter any new nodes at the parent's previous position.
+  var nodeEnter = node
+    .enter()
+    .append("g")
+    .attr("class", "node")
+    .attr("transform", function(d) {
+      return "translate(" + source.x0 + "," + source.y0 + ")";
+    })
+    .on("click", function(d) { click(d, root)})
+    .on("mouseover", function(d) {
+      // Use D3 to select element, change color and size
+      if (!flag_mouse) {
+        d3.select(this).attr({
+          fill: "orange"
+        });
+        tooltip
+       .html(
+         "<div class='w3-container'  align='center'><h2>Node info</h2><ul class='w3-ul w3-large'><li> Node name: " +
+           d.name +
+           "</li><li>Is main line: " +
+           d.primary +
+           "</li>Number of children: " +
+           (d._children ? Object.keys(d._children).length : 0) +
+           "<li></li></ul></div>"
+       )
+          .style("visibility", "visible");
+        var board1 = Chessboard('board', d.fen)
+        //reset all the data to have color undefined.
+        // flatten(root).forEach(function(d) {
+        //   d.color = undefined;
+        // });
+        //iterate over the selected node and set color as red.
+        //till it reaches the root
+        while (d.parent) {
+          d.color = "darkred";
+          d = d.parent;
+        }
+
+        d3.selectAll("path").style("stroke", function(d) {
+          if (d.target.color) {
+            return d.target.color; //if the value is set
+          } else {
+            return "gray";
+          }
+        });
+        update(d, root);
+      }
+    })
+    .on("mouseout", function(d) {
+      if (!flag_mouse) {
+        d3.select(this).attr({
+          fill: "black"
+        });
+        tooltip.style("visibility", "hidden");
+        svg.selectAll("path.link").style("stroke", function(d) {
+          d.target.color = "gray";
+          return "gray";
+        });
+        update(d, root);
+      }
+    });
+
+  draw_node(nodeEnter)
+
+  nodeEnter
+    .append("text")
+    .attr("x", rectW / 2)
+    .attr("y", rectH / 2)
+    .attr("dy", ".35em")
+    .attr("text-anchor", "middle")
+    .text(function(d) {
+        if (d._children && Object.keys(d._children).length > 0) {
+            return d.name + ' (' + Object.keys(d._children).length + ')';
+        } else {
+            return  d.name;
+        }
+    });
+
+  // Transition nodes to their new position.
+  var nodeUpdate = node
+    .transition()
+    .each("end", transition_over)
+    .duration(duration)
+    .attr("transform", function(d) {
+      return "translate(" + d.x + "," + d.y + ")";
+    });
+
+  //draw_node(nodeUpdate)
+
+  nodeUpdate.select("text").style("fill-opacity", 1);
+
+  // Transition exiting nodes to the parent's new position.
+  var nodeExit = node
+    .exit()
+    .transition()
+    .duration(duration)
+    .attr("transform", function(d) {
+      return "translate(" + source.x + "," + source.y + ")";
+    })
+    .remove();
+
+  nodeExit
+    .select("rect")
+    .attr("width", rectW)
+    .attr("height", rectH)
+    //.attr("width", bbox.getBBox().width)""
+    //.attr("height", bbox.getBBox().height)
+    .attr("stroke", "black")
+    .attr("stroke-width", 1);
+
+  nodeExit.select("text");
+
+  // Update the links…
+  var link = svg.selectAll("path.link").data(links, function(d) {
+    return d.target.id;
+  });
+
+  // Enter any new links at the parent's previous position.
+  link
+    .enter()
+    .insert("path", "g")
+    .attr("class", "link")
+    .attr("x", rectW / 2)
+    .attr("y", rectH / 2)
+    .attr("d", function(d) {
+      var o = {
+        x: source.x0,
+        y: source.y0
+      };
+      return diagonal({
+        source: o,
+        target: o
+      });
+    });
+
+  // Transition links to their new position.
+  link
+    .transition()
+    .duration(duration)
+    .attr("d", diagonal);
+
+  // Transition exiting nodes to the parent's new position.
+  link
+    .exit()
+    .transition()
+    .duration(duration)
+    .attr("d", function(d) {
+      var o = {
+        x: source.x,
+        y: source.y
+      };
+      return diagonal({
+        source: o,
+        target: o
+      });
+    })
+    .remove();
+
+  // Stash the old positions for transition.
+  nodes.forEach(function(d) {
+    d.x0 = d.x;
+    d.y0 = d.y;
+  });
+}
 
 function draw_tree(root) {
     root.x0 = 0;
@@ -90,199 +282,6 @@ function draw_tree(root) {
 
     root.children.forEach(collapse);
 
-    function update(source) {
-      // Compute the new tree layout.
-      var nodes = tree.nodes(root).reverse(), // Runs the tree layout, returning the array of nodes associated with the specified root node
-        links = tree.links(nodes);
-      // Normalize for fixed-depth.
-      nodes.forEach(function(d) {
-        d.y = d.depth * 100;
-      });
-
-      // Update the nodes…
-      var node = svg.selectAll("g.node").data(nodes, function(d) {
-        // We then declare the variable / function node so that when we call it
-        // later it will know to select the appropriate object (a node) with the appropriate .id
-        return d.id || (d.id = ++i);
-      });
-
-      // Enter any new nodes at the parent's previous position.
-      var nodeEnter = node
-        .enter()
-        .append("g")
-        .attr("class", "node")
-        .attr("transform", function(d) {
-          return "translate(" + source.x0 + "," + source.y0 + ")";
-        })
-        .on("click", click)
-        .on("mouseover", function(d) {
-          // Use D3 to select element, change color and size
-          if (!flag_mouse) {
-            d3.select(this).attr({
-              fill: "orange"
-            });
-            tooltip
-           .html(
-             "<div class='w3-container'  align='center'><h2>Node info</h2><ul class='w3-ul w3-large'><li> Node name: " +
-               d.name +
-               "</li><li>Is main line: " +
-               d.primary +
-               "</li>Number of children: " +
-               (d._children ? Object.keys(d._children).length : 0) +
-               "<li></li></ul></div>"
-           )
-              .style("visibility", "visible");
-            var board1 = Chessboard('board', d.fen)
-            //reset all the data to have color undefined.
-            // flatten(root).forEach(function(d) {
-            //   d.color = undefined;
-            // });
-            //iterate over the selected node and set color as red.
-            //till it reaches the root
-            while (d.parent) {
-              d.color = "darkred";
-              d = d.parent;
-            }
-
-            d3.selectAll("path").style("stroke", function(d) {
-              if (d.target.color) {
-                return d.target.color; //if the value is set
-              } else {
-                return "gray";
-              }
-            });
-            update(d);
-          }
-        })
-        .on("mouseout", function(d) {
-          if (!flag_mouse) {
-            d3.select(this).attr({
-              fill: "black"
-            });
-            tooltip.style("visibility", "hidden");
-            svg.selectAll("path.link").style("stroke", function(d) {
-              d.target.color = "gray";
-              return "gray";
-            });
-            update(d);
-          }
-        });
-
-      draw_node(nodeEnter)
-
-      nodeEnter
-        .append("text")
-        .attr("x", rectW / 2)
-        .attr("y", rectH / 2)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "middle")
-        .text(function(d) {
-            if (d._children && Object.keys(d._children).length > 0) {
-                return d.name + ' (' + Object.keys(d._children).length + ')';
-            } else {
-                return  d.name;
-            }
-        });
-
-      // Transition nodes to their new position.
-      var nodeUpdate = node
-        .transition()
-        .each("end", transition_over)
-        .duration(duration)
-        .attr("transform", function(d) {
-          return "translate(" + d.x + "," + d.y + ")";
-        });
-
-      //draw_node(nodeUpdate)
-
-      nodeUpdate.select("text").style("fill-opacity", 1);
-
-      // Transition exiting nodes to the parent's new position.
-      var nodeExit = node
-        .exit()
-        .transition()
-        .duration(duration)
-        .attr("transform", function(d) {
-          return "translate(" + source.x + "," + source.y + ")";
-        })
-        .remove();
-
-      nodeExit
-        .select("rect")
-        .attr("width", rectW)
-        .attr("height", rectH)
-        //.attr("width", bbox.getBBox().width)""
-        //.attr("height", bbox.getBBox().height)
-        .attr("stroke", "black")
-        .attr("stroke-width", 1);
-
-      nodeExit.select("text");
-
-      // Update the links…
-      var link = svg.selectAll("path.link").data(links, function(d) {
-        return d.target.id;
-      });
-
-      // Enter any new links at the parent's previous position.
-      link
-        .enter()
-        .insert("path", "g")
-        .attr("class", "link")
-        .attr("x", rectW / 2)
-        .attr("y", rectH / 2)
-        .attr("d", function(d) {
-          var o = {
-            x: source.x0,
-            y: source.y0
-          };
-          return diagonal({
-            source: o,
-            target: o
-          });
-        });
-
-      // Transition links to their new position.
-      link
-        .transition()
-        .duration(duration)
-        .attr("d", diagonal);
-
-      // Transition exiting nodes to the parent's new position.
-      link
-        .exit()
-        .transition()
-        .duration(duration)
-        .attr("d", function(d) {
-          var o = {
-            x: source.x,
-            y: source.y
-          };
-          return diagonal({
-            source: o,
-            target: o
-          });
-        })
-        .remove();
-
-      // Stash the old positions for transition.
-      nodes.forEach(function(d) {
-        d.x0 = d.x;
-        d.y0 = d.y;
-      });
-    }
-
-    // Toggle children on click.
-    function click(d) {
-      flag_mouse = true;
-      if (d.children) {
-        d._children = d.children;
-        d.children = null;
-      } else {
-        d.children = d._children;
-        d._children = null;
-      }
-      update(d);
-    }
-    update(root);
+    update(root, root);
     d3.select(self.frameElement).style("height", "800px");
 }
