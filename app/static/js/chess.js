@@ -18,6 +18,7 @@ rectW = 60;
 rectH = 30;
 node_seperationW = rectW + 10;
 node_seperationH = rectH + 10;
+dist_between_nodes = 100;
 background_colour = "#gray"
 
 //D3 stuff
