@@ -5,14 +5,6 @@ var diagonal = d3.svg.diagonal().projection(function(d) {
   return [d.x + rectW / 2, d.y + rectH / 2];
 });
 
-function shrink(d) {
-    if (d.children) {
-      d._children = d.children;
-      d.shrunk_children = d.children;
-      d._children.forEach(collapse);
-      d.children = null;
-    }
-}
 
 function collapse(d) {
   if (d.children) {
@@ -64,7 +56,6 @@ function redraw() {
 }
 
 function nodeWidth(d) {
-    console.log(d.level)
     if (isNaN(d.level) || d.level <= 1) {
         return rectW;
     } else if (d.level <= 5) {
