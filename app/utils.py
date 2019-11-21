@@ -1,9 +1,10 @@
 import chess
 import chess.engine
+import functools
 
 engine_path = 'stockfish'
 blunder_threshold = 200
-limits = chess.engine.Limit(time=.5)
+limits = chess.engine.Limit(time=.1)
 root_fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 engine_options = {'threads' : 10}
 
@@ -45,12 +46,12 @@ def gen_child_info(board, engine, max_children = 20):
             c['value'] = 1 / (delta / 100 + 1)
     return children
 
+@functools.lru_cache(maxsize = 1028)
 def get_children(fen):
     engine = chess.engine.SimpleEngine.popen_uci(engine_path)
-
     board = chess.Board(fen = fen)
-
     children = gen_child_info(board, engine)
+    engine.quit()
 
     parent_fen = board.fen()
 
