@@ -4,7 +4,7 @@ import functools
 
 engine_path = 'stockfish'
 blunder_threshold = 200
-limits = chess.engine.Limit(time=.1)
+limits = chess.engine.Limit(time=.5)
 root_fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 engine_options = {'threads' : 10}
 
