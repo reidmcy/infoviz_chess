@@ -1,27 +1,18 @@
 import flask
 import flask_assets
 
-
 import utils
-
 
 import argparse
 import os.path
 import sys
-import glob
+import json
 
 app = flask.Flask('Chess')
 assets = flask_assets.Environment(app)
 
-css_bundle = flask_assets.Bundle(
-                    'css/chess.css',
-                    'css/chessboard-1.0.0.css'
-                    )
-js_bundle = flask_assets.Bundle(
-                    'js/chess.js',
-                    'js/tree.json',
-                    'js/chessboard-1.0.0.js',
-                    )
+css_bundle = flask_assets.Bundle('css/')
+js_bundle = flask_assets.Bundle('js/')
 img_bundel = flask_assets.Bundle('img/chesspieces/')
 data_bundel = flask_assets.Bundle('data/')
 assets.register('js_all', js_bundle)
@@ -33,12 +24,13 @@ assets.register('data_all', data_bundel)
 def home():
     return flask.render_template("chess.html")
 
-@app.route("/board/<fen>", methods = ['GET', 'POST'])
-def board(fen = None):
-    if flask.request.method == 'GET':
-        return f'{{g : {fen}}}'
-    data = flask.request.form
-    return str(data)
+@app.route("/board/<r1>/<r2>/<r3>/<r4>/<r5>/<r6>/<r7>/<r8>", methods = ['GET','POST'])
+def board(**fen_kwargs):
+    fen_vals = []
+    for i in range(8):
+        fen_vals.append(fen_kwargs[f"r{i + 1}"])
+    fen = '/'.join(fen_vals)
+    return flask.Response(json.dumps(utils.get_children(fen)), mimetype='text/json')
 
 @app.route('/favicon.ico')
 def favicon():
