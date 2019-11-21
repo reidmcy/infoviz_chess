@@ -14,9 +14,10 @@ height = 800 - margin.top - margin.bottom;
 // Tree tree viz stuff
 var i = 0;
 duration = 750;
-rectW = 60;
+minWidth = 20;
+rectW = 40;
 rectH = 30;
-node_seperationW = rectW + 10;
+node_seperationW = minWidth + rectW;
 node_seperationH = rectH + 10;
 dist_between_nodes = 100;
 
@@ -35,7 +36,9 @@ low_val_colour = [10,255,0];
 //D3 stuff
 var flag_mouse = false;
 
-var tree = d3.layout.tree().nodeSize([node_seperationW, node_seperationH]);
+var tree = d3.layout.tree()
+        .nodeSize([node_seperationW, node_seperationH])
+        .separation(separation);
 
 //The next block of code appends our SVG working area to the body of our web page and creates a group elements (<g>) that will contain our svg objects (our nodes, text and links).
 var svg = d3

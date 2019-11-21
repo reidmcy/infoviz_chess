@@ -6,6 +6,15 @@ function collapse(d) {
   }
 }
 
+function separation(a, b) {
+    if (a.parent == b.parent) {
+        return Math.max(a.value, b.value) + .3;
+    } else {
+        return 2;
+    }
+}
+
+
 function flatten(root) {
   var nodes = [],
     i = 0;
@@ -47,9 +56,9 @@ function redraw() {
 
 function nodeWidth(d) {
     if (isNaN(d.primary) || d.primary) {
-        return rectW;
+        return minWidth + rectW;
     } else {
-        return rectW * d.value;
+        return minWidth + rectW * d.value;
     }
 }
 
@@ -123,7 +132,7 @@ function mouseout(d, root, node) {
 
 function nodeText(d) {
     if (d._children && Object.keys(d._children).length > 0) {
-        return d.name + ' (' + Object.keys(d._children).length + ')';
+        return d.name;// + ' (' + Object.keys(d._children).length + ')';
     } else {
         return  d.name;
     }
