@@ -71,6 +71,6 @@ var tooltip = d3
   .style("position", "absolute")
   .style("visibility", "hidden");
 
-d3.json("/static/js/board_dat.json", function(data) {
-    draw_tree(data[0]);
+d3.json("/start", function(data) {
+    draw_tree(data);
 });

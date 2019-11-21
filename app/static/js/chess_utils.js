@@ -14,7 +14,6 @@ function separation(a, b) {
     }
 }
 
-
 function flatten(root) {
   var nodes = [],
     i = 0;
@@ -79,11 +78,14 @@ function click(d, root) {
   if (d.children) {
     d._children = d.children;
     d.children = null;
+    update(d, root);
   } else {
-    d.children = d._children;
-    d._children = null;
+      d3.json('/board/' + d.fen, function(data) {
+                    d.children = data;
+                    d._children = null;
+                    update(d, root);
+                });
   }
-  update(d, root);
 }
 
 function mouseover(d, root, node) {
@@ -101,7 +103,7 @@ function mouseover(d, root, node) {
        "</li><li>Value: " +
        d.value.toFixed(2) +
        "</li>Number of children: " +
-       (d._children ? Object.keys(d._children).length : 0) +
+       d.num_moves +
        "<li></li></ul></div>"
    )
       .style("visibility", "visible");
