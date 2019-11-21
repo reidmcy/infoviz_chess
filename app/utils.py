@@ -62,7 +62,6 @@ def get_children(fen):
         c['parent_fen'] =  parent_fen
         c['fen'] =  board.fen()
         c['num_moves'] =  len(list(board.legal_moves))
-        c['children'] = []
         board.pop()
     c_ret = []
     for i, c in enumerate(children):

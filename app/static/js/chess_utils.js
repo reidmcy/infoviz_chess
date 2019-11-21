@@ -76,10 +76,14 @@ function draw_node(node){
 function click(d, root) {
   flag_mouse = true;
   if (d.children) {
-    d._children = d.children;
-    d.children = null;
-    update(d, root);
-  } else {
+        d._children = d.children;
+        d.children = null;
+        update(d, root);
+    } else if (d._children) {
+        d.children = d._children;
+        d._children = null;
+        update(d, root);
+    } else {
       d3.json('/board/' + d.fen, function(data) {
                     d.children = data;
                     d._children = null;
