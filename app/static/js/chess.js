@@ -19,7 +19,18 @@ rectH = 30;
 node_seperationW = rectW + 10;
 node_seperationH = rectH + 10;
 dist_between_nodes = 100;
-background_colour = "#gray"
+
+stroke_select_colour = "darkred";
+stroke_not_select_colour = "gray";
+
+node_line_colour = 'black'
+node_unselect_colour = 'black'
+
+background_colour = "#gray";
+primary_colour = "rbg(0, 0, 200)";
+
+high_val_colour = [10,10,230];
+low_val_colour = [10,255,0];
 
 //D3 stuff
 var flag_mouse = false;
@@ -43,6 +54,11 @@ var svg = d3
 
 //necessary so that zoom knows where to zoom and unzoom from
 zm.translate([350, 20]);
+
+//The next block of code declares the function that will be used to draw the links between the nodes.
+var diagonal = d3.svg.diagonal().projection(function(d) {
+  return [d.x + rectW / 2, d.y + rectH / 2];
+});
 
 // create a tooltip
 var tooltip = d3

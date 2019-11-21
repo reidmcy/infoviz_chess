@@ -1,30 +1,8 @@
-
-
-//The next block of code declares the function that will be used to draw the links between the nodes.
-var diagonal = d3.svg.diagonal().projection(function(d) {
-  return [d.x + rectW / 2, d.y + rectH / 2];
-});
-
-
 function collapse(d) {
   if (d.children) {
     d._children = d.children;
     d._children.forEach(collapse);
     d.children = null;
-  }
-}
-
-function dist2(a, b) {
-  return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2;
-}
-
-
-function makeParentGray(node) {
-  if (node === root) {
-    return;
-  } else {
-    // makeLinkGray()
-    return makeParentGray(parent);
   }
 }
 
@@ -43,6 +21,18 @@ function flatten(root) {
   return nodes;
 }
 
+function interpolateColor(color1, color2, factor) {
+
+    var result = "rgb("
+    for (var i = 0; i < 3; i++) {
+        result += Math.round(color1[i] + factor * (color2[i] - color1[i]));
+        if (i < 2) {
+            result += ', '
+        }
+    }
+    return result + ')';
+};
+
 function transition_over() {
   flag_mouse = false;
 }
@@ -56,12 +46,10 @@ function redraw() {
 }
 
 function nodeWidth(d) {
-    if (isNaN(d.level) || d.level <= 1) {
+    if (isNaN(d.primary) || d.primary) {
         return rectW;
-    } else if (d.level <= 5) {
-        return rectW / 2;
     } else {
-        return rectW / 4;
+        return rectW * d.value;
     }
 }
 
@@ -69,14 +57,10 @@ function draw_node(node){
     node.append("rect")
       .attr("width", nodeWidth)
       .attr("height", rectH)
-      .attr("stroke", "black")
+      .attr("stroke", node_line_colour)
       .attr("stroke-width", 1)
       .style("fill", function(d) {
-          if (d.primary) {
-              return "#08306b";
-          } else {
-              return d._children ? "lightsteelblue" : "#fff";
-          }
+          return interpolateColor(high_val_colour, low_val_colour, d.value);
 
       });
 }
@@ -106,8 +90,8 @@ function mouseover(d, root, node) {
        d.name +
        "</li><li>Is main line: " +
        d.primary +
-       "</li><li>Level: " +
-       d.level +
+       "</li><li>Value: " +
+       d.value +
        "</li>Number of children: " +
        (d._children ? Object.keys(d._children).length : 0) +
        "<li></li></ul></div>"
@@ -115,17 +99,11 @@ function mouseover(d, root, node) {
       .style("visibility", "visible");
     var board1 = Chessboard('board', d.fen);
     while (d.parent) {
-      d.color = "darkred";
+      d.color = stroke_select_colour;
       d = d.parent;
     }
 
-    d3.selectAll("path").style("stroke", function(d) {
-      if (d.target.color) {
-        return d.target.color; //if the value is set
-      } else {
-        return "gray";
-      }
-    });
+    d3.selectAll("path").style("stroke", function(d) { return d.target.color;});
     update(d, root);
   }
 }
@@ -133,12 +111,12 @@ function mouseover(d, root, node) {
 function mouseout(d, root, node) {
   if (!flag_mouse) {
     d3.select(node).attr({
-      fill: "black"
+      fill: node_unselect_colour
     });
     tooltip.style("visibility", "hidden");
     svg.selectAll("path.link").style("stroke", function(d) {
-      d.target.color = "gray";
-      return "gray";
+      d.target.color = stroke_not_select_colour;
+      return d.target.color;
     });
     update(d, root);
   }
@@ -213,7 +191,7 @@ function update(source, root) {
     .select("rect")
     .attr("width", nodeWidth )
     .attr("height", rectH)
-    .attr("stroke", "black")
+    .attr("stroke", node_unselect_colour)
     .attr("stroke-width", 1);
 
   nodeExit.select("text");
@@ -227,7 +205,7 @@ function update(source, root) {
     .enter()
     .insert("path", "g")
     .attr("class", "link")
-    .attr("x", rectW / 2)
+    .attr("x", nodeWidth)
     .attr("y", rectH / 2)
     .attr("d", function(d) {
       var o = {
