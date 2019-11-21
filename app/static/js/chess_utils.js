@@ -99,7 +99,7 @@ function mouseover(d, root, node) {
        "</li><li>Is main line: " +
        d.primary +
        "</li><li>Value: " +
-       d.value +
+       d.value.toFixed(2) +
        "</li>Number of children: " +
        (d._children ? Object.keys(d._children).length : 0) +
        "<li></li></ul></div>"

@@ -33,10 +33,10 @@ assets.register('data_all', data_bundel)
 def home():
     return flask.render_template("chess.html")
 
-@app.route("/board", methods = ['GET', 'POST'])
-def board():
+@app.route("/board/<fen>", methods = ['GET', 'POST'])
+def board(fen = None):
     if flask.request.method == 'GET':
-        return '{g : 1}'
+        return f'{{g : {fen}}}'
     data = flask.request.form
     return str(data)
 
