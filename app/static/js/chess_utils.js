@@ -61,7 +61,6 @@ function draw_node(node){
       .attr("stroke-width", 1)
       .style("fill", function(d) {
           return interpolateColor(high_val_colour, low_val_colour, d.value);
-
       });
 }
 
@@ -205,8 +204,7 @@ function update(source, root) {
     .enter()
     .insert("path", "g")
     .attr("class", "link")
-    .attr("x", nodeWidth)
-    .attr("y", rectH / 2)
+    .style("stroke-width", function(d) { return  d.target.value * 5;})
     .attr("d", function(d) {
       var o = {
         x: source.x0,

@@ -34,6 +34,7 @@ low_val_colour = [10,255,0];
 
 //D3 stuff
 var flag_mouse = false;
+
 var tree = d3.layout.tree().nodeSize([node_seperationW, node_seperationH]);
 
 //The next block of code appends our SVG working area to the body of our web page and creates a group elements (<g>) that will contain our svg objects (our nodes, text and links).
@@ -57,7 +58,7 @@ zm.translate([350, 20]);
 
 //The next block of code declares the function that will be used to draw the links between the nodes.
 var diagonal = d3.svg.diagonal().projection(function(d) {
-  return [d.x + rectW / 2, d.y + rectH / 2];
+  return [d.x + nodeWidth(d) / 2, d.y + rectH / 2];
 });
 
 // create a tooltip
