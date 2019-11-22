@@ -1,12 +1,25 @@
 import chess
 import chess.engine
+
+import sys
 import functools
 
-engine_path = 'stockfish'
-blunder_threshold = 200
+if sys.platform == 'darwin':
+    engine_path = 'stockfish/stockfish-10-64'
+else:
+    engine_path = 'stockfish'
+
+# How long the engine takes per query
 limits = chess.engine.Limit(time=.5)
+
+# Board to start at
 root_fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-engine_options = {'threads' : 10}
+
+# number of threads stockfish can use
+engine_options = {'threads' : 8}
+
+# What we consider a blunder
+blunder_threshold = 200
 
 def cpToInt(cpVal):
     if cpVal.is_mate():
