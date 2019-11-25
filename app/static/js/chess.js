@@ -32,12 +32,12 @@ node_unselect_colour = 'black'
 background_colour = "rbg(5, 5, 5)";
 primary_colour = "rbg(0, 0, 200)";
 
-high_val_colour_lines = [255, 238, 255]; // TODO
-low_val_colour_lines = [95, 75, 102]; // TODO
+high_val_colour_lines = [40, 255, 0]//[255, 238, 255]; // TODO
+low_val_colour_lines = [200, 75, 255]; // TODO
 
 
-high_val_colour_nodes = [200, 200, 200]; // TODO
-low_val_colour_nodes = [100, 100, 100]; // TODO
+black_colour_nodes = [200, 200, 200]; // TODO
+white_colour_nodes = [100, 100, 100]; // TODO
 
 //D3 stuff
 var flag_mouse = false;
@@ -77,6 +77,6 @@ var tooltip = d3
   .style("position", "absolute")
   .style("visibility", "hidden");
 
-d3.json("/start", function(data) {
+d3.json('/start/' + start_fen, function(data) {
     draw_tree(data);
 });

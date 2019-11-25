@@ -68,7 +68,9 @@ function draw_node(node){
       .attr("stroke", node_line_colour)
       .attr("stroke-width", 1)
       .style("fill", function(d) {
-          return interpolateColor(high_val_colour_nodes, low_val_colour_nodes, .5 - (d.score / 100));
+          console.log('rel' + d.score);
+          console.log('abs' + d.abs_score);
+          return interpolateColor(white_colour_nodes, black_colour_nodes, .5 - (d.abs_score / 100));
       });
 }
 
@@ -240,7 +242,7 @@ function update(source, root) {
     .enter()
     .insert("path", "g")
     .attr("class", "link")
-    .style("stroke-width", function(d) { return  d.target.value * 5;})
+    .style("stroke-width", function(d) { return  d.target.value  * d.target.value  *(d.target.value * 10) * d.target.value  +1 ;})
     .attr("d", function(d) {
       var o = {
         x: source.x0,

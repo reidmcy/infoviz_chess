@@ -26,6 +26,21 @@ engine_options = {'threads' : 8}
 # What we consider a blunder
 blunder_threshold = 200
 
+fenComps = 'rrqn2k1/8/pPp4p/2Pp1pp1/3Pp3/4P1P1/R2NB1PP/1Q4K1 w KQkq - 0 1'.split()
+
+def active_is_white(fen_str):
+    return fen_str.split(' ')[1] == 'w'
+
+def fen_complete(s):
+    splitS = s.split()
+    return ' '.join(splitS + fenComps[len(splitS):])
+
+def get_fen(kwargs):
+    fen_vals = []
+    for i in range(8):
+        fen_vals.append(kwargs[f"r{i + 1}"])
+    return  fen_complete('/'.join(fen_vals))
+
 def cpToInt(cpVal):
     if cpVal.is_mate():
         if cpVal.relative.mate() < 0:
@@ -74,10 +89,14 @@ def engine_query(fen):
 
     for i, c in enumerate(children):
         move = c['move']
+        c['name'] = board.san(board.parse_uci(move))
         board.push_uci(move)
-        c['name'] = move
+        c['uci_move'] = move
+
         c['parent_fen'] =  parent_fen
         c['fen'] =  board.fen()
+        c['is_white'] = active_is_white(board.fen())
+        c['abs_score'] = c['score'] if c['is_white'] else -1 * c['score']
         c['num_moves'] =  len(list(board.legal_moves))
         board.pop()
     c_ret = []
@@ -114,13 +133,14 @@ def get_children(fen):
         return get_children(fen)
 
 
-def get_root():
+def get_start(fen):
 
     return {
         'depth': 20,
         'seldepth': 1,
         'multipv': 1,
         'score': 0,
+        'abs_score' : 0.0,
         'nodes': 1301973,
         'nps': 1299374,
         'tbhits': 0,
@@ -131,7 +151,8 @@ def get_root():
         'blunder': False,
         'value': 1.0,
         'name': 'root',
-        'parent_fen': root_fen,
+        'parent_fen': fen,
+        'fen' : fen,
         'num_moves' : 20,
-        'children': get_children(root_fen),
+        'children': get_children(fen),
      }

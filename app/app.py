@@ -20,21 +20,26 @@ assets.register('css_all', css_bundle)
 assets.register('img_all', img_bundel)
 assets.register('data_all', data_bundel)
 
+
 @app.route("/")
-def home():
-    return flask.render_template("chess.html")
+@app.route("/root")
+@app.route("/root/<r1>/<r2>/<r3>/<r4>/<r5>/<r6>/<r7>/<r8>")
+def root_fen(**fen_kwargs):
+    if len(fen_kwargs) < 1:
+        fen = utils.root_fen
+    else:
+        fen = utils.get_fen(fen_kwargs)
+    return flask.render_template("chess.html", start_fen = fen)
 
 @app.route("/board/<r1>/<r2>/<r3>/<r4>/<r5>/<r6>/<r7>/<r8>", methods = ['GET','POST'])
 def get_children(**fen_kwargs):
-    fen_vals = []
-    for i in range(8):
-        fen_vals.append(fen_kwargs[f"r{i + 1}"])
-    fen = '/'.join(fen_vals)
+    fen = utils.get_fen(fen_kwargs)
     return flask.Response(json.dumps(utils.get_children(fen)), mimetype='text/json')
 
-@app.route("/start", methods = ['GET','POST'])
-def start():
-    return flask.Response(json.dumps(utils.get_root()), mimetype='text/json')
+@app.route("/start/<r1>/<r2>/<r3>/<r4>/<r5>/<r6>/<r7>/<r8>", methods = ['GET','POST'])
+def start_fen(**fen_kwargs):
+    fen = utils.get_fen(fen_kwargs)
+    return flask.Response(json.dumps(utils.get_start(fen)), mimetype='text/json')
 
 @app.route('/favicon.ico')
 def favicon():
