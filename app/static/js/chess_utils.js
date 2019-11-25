@@ -68,7 +68,7 @@ function draw_node(node){
       .attr("stroke", node_line_colour)
       .attr("stroke-width", 1)
       .style("fill", function(d) {
-          return interpolateColor(high_val_colour, low_val_colour, d.value);
+          return interpolateColor(high_val_colour_nodes, low_val_colour_nodes, .5 - (d.score / 100));
       });
 }
 
@@ -92,6 +92,17 @@ function click(d, root) {
   }
 }
 
+function onDragMove (newLocation, oldLocation, source,
+                   piece, position, orientation) {
+    console.log('New location: ' + newLocation)
+    console.log('Old location: ' + oldLocation)
+    console.log('Source: ' + source)
+    console.log('Piece: ' + piece)
+    console.log('Position: ' + Chessboard.objToFen(position))
+    console.log('Orientation: ' + orientation)
+    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+}
+
 function mouseover(d, root, node) {
   // Use D3 to select element, change color and size
   if (!flag_mouse) {
@@ -104,6 +115,8 @@ function mouseover(d, root, node) {
        d.name +
        "</li><li>Is main line: " +
        d.primary +
+       "</li><li>Score: " +
+       d.score.toFixed(0) +
        "</li><li>Value: " +
        d.value.toFixed(2) +
        "</li>Number of children: " +
@@ -111,13 +124,20 @@ function mouseover(d, root, node) {
        "<li></li></ul></div>"
    )
       .style("visibility", "visible");
-    var board1 = Chessboard('board', d.fen);
+    var board1 = Chessboard(
+                        'board',
+                        position = d.fen,
+                        //draggable = true,
+                        //sparePieces = true,
+                        //onDragMove = onDragMove,
+                        );
     while (d.parent) {
       d.color = stroke_select_colour;
       d = d.parent;
     }
 
-    d3.selectAll("path").style("stroke", function(d) { return d.target.color;});
+    d3.selectAll("path")
+        .style("stroke", function(d) { return d.target.color;});
     update(d, root);
   }
 }
@@ -129,7 +149,7 @@ function mouseout(d, root, node) {
     });
     tooltip.style("visibility", "hidden");
     svg.selectAll("path.link").style("stroke", function(d) {
-      d.target.color = stroke_not_select_colour;
+      d.target.color = interpolateColor(high_val_colour_lines, low_val_colour_lines, d.target.value);
       return d.target.color;
     });
     update(d, root);
@@ -176,9 +196,10 @@ function update(source, root) {
   nodeEnter
     .append("text")
     .attr("x", function(d) {return nodeWidth(d) / 2;} )
-    .attr("y", rectH / 2)
+    .attr("y", rectH * -.5)
     .attr("dy", ".35em")
     .attr("text-anchor", "middle")
+    .style("fill", text_colour)
     .style("fill-opacity", 1)
     .text(nodeText);
 

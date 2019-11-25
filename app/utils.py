@@ -2,12 +2,17 @@ import chess
 import chess.engine
 
 import sys
+import json
 import functools
 
 if sys.platform == 'darwin':
     engine_path = 'stockfish/stockfish-10-64'
 else:
     engine_path = 'stockfish'
+
+cache_path = 'sf_cache.json'
+
+sf_cache = None
 
 # How long the engine takes per query
 limits = chess.engine.Limit(time=.5)
@@ -59,8 +64,7 @@ def gen_child_info(board, engine, max_children = 20):
             c['value'] = 1 / (delta / 100 + 1)
     return children
 
-@functools.lru_cache(maxsize = 1028)
-def get_children(fen):
+def engine_query(fen):
     engine = chess.engine.SimpleEngine.popen_uci(engine_path)
     board = chess.Board(fen = fen)
     children = gen_child_info(board, engine)
@@ -83,6 +87,32 @@ def get_children(fen):
         else:
             c_ret.insert(0, c)
     return c_ret
+
+@functools.lru_cache(maxsize = 1028)
+def get_children(fen):
+    global sf_cache
+    try:
+        return sf_cache[fen]
+    except KeyError:
+        sf_cache[fen] = engine_query(fen)
+        with open(cache_path, 'a') as f:
+            json.dump({
+                        'fen' : fen,
+                        'data' : sf_cache[fen],
+                        }, f)
+            f.write('\n')
+        return sf_cache[fen]
+    except TypeError:
+        sf_cache = {}
+        try:
+            with open(cache_path, 'r') as f:
+                for l in f:
+                    l_json = json.loads(l)
+                    sf_cache[l_json['fen']] = l_json['data']
+        except FileNotFoundError:
+            pass
+        return get_children(fen)
+
 
 def get_root():
 

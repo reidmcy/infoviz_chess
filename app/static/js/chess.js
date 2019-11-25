@@ -21,17 +21,23 @@ node_seperationW = minWidth + rectW;
 node_seperationH = rectH + 10;
 dist_between_nodes = 100;
 
+text_colour = "blue"
+
 stroke_select_colour = "#DB838C";
 stroke_not_select_colour = "gray";
 
 node_line_colour = 'black'
 node_unselect_colour = 'black'
 
-background_colour = "#gray";
+background_colour = "rbg(5, 5, 5)";
 primary_colour = "rbg(0, 0, 200)";
 
-high_val_colour = [255, 238, 255]; // TODO
-low_val_colour = [95, 75, 102]; // TODO
+high_val_colour_lines = [255, 238, 255]; // TODO
+low_val_colour_lines = [95, 75, 102]; // TODO
+
+
+high_val_colour_nodes = [200, 200, 200]; // TODO
+low_val_colour_nodes = [100, 100, 100]; // TODO
 
 //D3 stuff
 var flag_mouse = false;
