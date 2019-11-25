@@ -1,21 +1,31 @@
 * {
   box-sizing: border-box;
   /* background-color: #e5e5e5; */
+  font-family: 'Kalam', cursive !important;
+  color: #272932;
+  
 }
 
 /* Create two equal columns that floats next to each other */
 #tree_part {
   float: left;
   width: 70%;
-  /* padding: 10px; */
+  background-color:#f6f0f5;
 }
 
 #info_part {
   float: left;
   width: 30%;
+  height: 1000px;
   padding: 10px;
-  /* height: 400px; */
-  /* visibility: hidden; */
+  background-color:#F1F4FF;
+}
+
+.gradient{
+  /* background: linear-gradient(rgb(66, 97, 97),rgb(216, 255, 239)); */
+  background: linear-gradient(rgb(95, 75, 102),rgb(255, 238, 255));
+  width: 50px;
+  height: 200px;
 }
 
 .node {

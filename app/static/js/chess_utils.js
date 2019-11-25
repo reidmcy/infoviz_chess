@@ -96,7 +96,7 @@ function mouseover(d, root, node) {
   // Use D3 to select element, change color and size
   if (!flag_mouse) {
     d3.select(node).attr({
-      fill: "orange"
+      fill: "#DB838C"
     });
     tooltip
    .html(
@@ -262,11 +262,11 @@ function update(source, root) {
 }
 
 function draw_tree(root) {
-    root.x0 = 0;
+    root.x0 = 1000;
     root.y0 = height / 2;
 
     root.children.forEach(collapse);
 
     update(root, root);
-    d3.select(self.frameElement).style("height", "800px");
+    d3.select(self.frameElement).style("height", "1000");
 }

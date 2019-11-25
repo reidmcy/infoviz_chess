@@ -7,6 +7,7 @@
     <link rel = "stylesheet" type = "text/css" href = "/static/css/chess.css" />
     <link rel = "stylesheet" type = "text/css" href = "/static/css/chessboard-1.0.0.css" />
     <link rel="stylesheet" href="/static/css/w3.css">
+    <link href="https://fonts.googleapis.com/css?family=Kalam&display=swap" rel="stylesheet">
 </head>
 
   </head>
@@ -14,12 +15,12 @@
   <body>
 
       <div class="row">
-          <div class="column" id="tree_part" style="background-color:#E5E5E5;">
+          <div class="column" id="tree_part">
+            <h2 style="text-align: center; ">Chess Move Tree</h2>
           </div>
-          <div class="column" id="info_part" style="background-color:#C2B4D6;">
-            <h2 align="center"> Node Info</h2>
+          <div class="column" id="info_part">
+            <h2 style="text-align:center"> Chess Board</h2>
             <div id="board"></div>
-            <!-- <p> Some attributes ... </p> -->
           </div>
 
         </div>
@@ -31,19 +32,12 @@
                       <span></span>
                       <span></span>
                       <span></span>
-
+                      
                       <ul class="legend-labels" id="menu">
-                          <li><span style="background:#08306b;"></span> 1st best move</li>
-                          <li><span style="background:#0a4a90;"></span>2nd best move</li>
-                          <li><span style="background:#1864aa;"></span>3rd best move</li>
-                          <li><span style="background:#2f7ebc;"></span>4th best move</li>
-                          <li><span style="background:#4b97c9;"></span>etc</li>
-                          <li><span style="background:#6daed5;"></span>etc</li>
-                          <li><span style="background:#93c3df;"></span>etc</li>
-                          <li><span style="background:#b5d4e9;"></span>etc</li>
-                          <li><span style="background:#cfe1f2;"></span>etc</li>
-                          <li><span style="background:#e3eef9;"></span>etc</li>
-                          <li><span style="background:#f7fbff;"></span>etc</li>
+                        <p>Best Move</p>
+                        <div class="gradient"></div>
+                        <p>Worst Move</p>
+                          
 
                       </ul>
                     </div>

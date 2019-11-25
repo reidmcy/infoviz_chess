@@ -21,7 +21,7 @@ node_seperationW = minWidth + rectW;
 node_seperationH = rectH + 10;
 dist_between_nodes = 100;
 
-stroke_select_colour = "darkred";
+stroke_select_colour = "#DB838C";
 stroke_not_select_colour = "gray";
 
 node_line_colour = 'black'
@@ -30,8 +30,8 @@ node_unselect_colour = 'black'
 background_colour = "#gray";
 primary_colour = "rbg(0, 0, 200)";
 
-high_val_colour = [10,10,230];
-low_val_colour = [10,255,0];
+high_val_colour = [255, 238, 255]; // TODO
+low_val_colour = [95, 75, 102]; // TODO
 
 //D3 stuff
 var flag_mouse = false;
@@ -54,7 +54,7 @@ var svg = d3
       .on("zoom", redraw))
   )
   .append("g")
-  .attr("transform", "translate(" + 350 + "," + 20 + ")");
+  .attr("transform", "translate(" + 600  + "," + 100 + ")");
 
 //necessary so that zoom knows where to zoom and unzoom from
 zm.translate([350, 20]);
