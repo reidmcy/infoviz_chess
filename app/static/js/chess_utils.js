@@ -68,8 +68,6 @@ function draw_node(node){
       .attr("stroke", node_line_colour)
       .attr("stroke-width", 1)
       .style("fill", function(d) {
-          console.log('rel' + d.score);
-          console.log('abs' + d.abs_score);
           return interpolateColor(white_colour_nodes, black_colour_nodes, .5 - (d.abs_score / 100));
       });
 }
@@ -92,17 +90,6 @@ function click(d, root) {
                     update(d, root);
                 });
   }
-}
-
-function onDragMove (newLocation, oldLocation, source,
-                   piece, position, orientation) {
-    console.log('New location: ' + newLocation)
-    console.log('Old location: ' + oldLocation)
-    console.log('Source: ' + source)
-    console.log('Piece: ' + piece)
-    console.log('Position: ' + Chessboard.objToFen(position))
-    console.log('Orientation: ' + orientation)
-    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 }
 
 function mouseover(d, root, node) {
