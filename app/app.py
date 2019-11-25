@@ -20,8 +20,10 @@ assets.register('css_all', css_bundle)
 assets.register('img_all', img_bundel)
 assets.register('data_all', data_bundel)
 
-
 @app.route("/")
+def index(**fen_kwargs):
+    return flask.render_template("index.html")
+
 @app.route("/root")
 @app.route("/root/<r1>/<r2>/<r3>/<r4>/<r5>/<r6>/<r7>/<r8>")
 def root_fen(**fen_kwargs):
