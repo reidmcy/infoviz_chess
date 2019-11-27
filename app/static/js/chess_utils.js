@@ -175,7 +175,7 @@ function mouseout(d, root, node) {
     d3.select(node).attr({
       fill: node_unselect_colour
     });
-    tooltip.style("visibility", "hidden");
+    //tooltip.style("visibility", "hidden");
     update(d, root);
   }
   svg.selectAll("path.link").style("stroke", function(d) { d.target.color = interpolateColor(high_val_colour_lines, low_val_colour_lines, d.target.value); return d.target.color; });
