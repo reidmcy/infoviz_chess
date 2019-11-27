@@ -44,6 +44,8 @@ white_colour_nodes = [100, 100, 100]; // TODO
 //D3 stuff
 var flag_mouse = false;
 var flag_child_update = false;
+var current_node;
+var root_node;
 
 var tree = d3.layout.tree()
         .nodeSize([node_seperationW, node_seperationH])

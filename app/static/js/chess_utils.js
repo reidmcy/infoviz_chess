@@ -87,26 +87,49 @@ function group_filter(node, max_group) {
     return node.score_group <= max_group;
 }
 
+function updateNodeChildren (d, root) {
+    if (d._all_children) {
+          d.children = d._all_children.filter(function (t) {
+              return t.score_group <= d.max_group;
+          });
+          update(d, root);
+      } else {
+        flag_child_update = true;
+        d3.json('/board/' + d.fen, function(data) {
+                      d._all_children = data
+                      d.children = d._all_children.filter(function (t) {
+                          return t.score_group <= d.max_group;
+                      });
+                      update(d, root);
+                  });
+    }
+}
+
+function expandNode(d, root) {
+    if (isNaN(d.max_group)) {
+        d.max_group = 0;
+    } else {
+        d.max_group = Math.min(2, d.max_group + 1);
+    }
+    updateNodeChildren(d, root);
+}
+
+function contractNode(d, root) {
+    if (isNaN(d.max_group)) {
+        d.max_group = -1;
+    } else {
+        d.max_group = Math.max(-1, d.max_group - 1);
+    }
+    updateNodeChildren(d, root);
+}
+
 // Toggle children on click.
 function click(d, root) {
-  if (isNaN(d.max_group)) {
-      d.max_group = 0;
-  } else if (d.max_group == 2) {
+  if (d.max_group == 2) {
       d.max_group = -1;
+      updateNodeChildren (d, root);
   } else {
-      d.max_group += 1;
-  }
-
-  if (d._all_children) {
-        d.children = d._all_children.filter(function (t) {return t.score_group <= d.max_group;});
-        update(d, root);
-    } else {
-      flag_child_update = true;
-      d3.json('/board/' + d.fen, function(data) {
-                    d._all_children = data
-                    d.children = d._all_children.filter(function (t) {return t.score_group <= d.max_group;});
-                    update(d, root);
-                });
+      expandNode(d, root);
   }
 }
 
@@ -125,18 +148,13 @@ function tooltip_draw(d) {
        "<li></li></ul></div>"
    )
       .style("visibility", "visible");
-    var board1 = Chessboard(
-                        'board',
-                        position = d.fen,
-                        //draggable = true,
-                        //sparePieces = true,
-                        //onDragMove = onDragMove,
-                        );
+    var board1 = Chessboard( 'board', position = d.fen);
 }
 
 function mouseover(d, root, node) {
   // Use D3 to select element, change color and size
   if (!flag_mouse) {
+    current_node = d;
     d3.select(node).attr({
       fill: "#DB838C"
     });
@@ -317,10 +335,13 @@ function draw_tree(root) {
     root.x0 = 1000;
     root.y0 = height / 2;
 
-    //root.children.forEach(collapse);
     click(root, root);
-
+    tooltip_draw(root);
     update(root, root);
     d3.select(self.frameElement).style("height", "1000");
-    tooltip_draw(root);
+    current_node = root;
+    root_node = root;
 }
+
+$('#expandBtn').on('click', function () {return expandNode(current_node, root_node)})
+$('#contractBtn').on('click', function () {return contractNode(current_node, root_node)})
