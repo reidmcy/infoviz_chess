@@ -36,7 +36,8 @@ primary_colour = "rbg(0, 0, 200)";
 
 high_val_colour_lines = [40, 255, 0]//[255, 238, 255]; // TODO
 low_val_colour_lines = [200, 75, 255]; // TODO
-
+blunder_dash_style = "(5,5)"
+nonblunder_dash_style = "(1)"
 
 black_colour_nodes = [200, 200, 200]; // TODO
 white_colour_nodes = [100, 100, 100]; // TODO

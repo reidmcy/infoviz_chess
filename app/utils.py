@@ -24,7 +24,7 @@ root_fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 engine_options = {'threads' : 8}
 
 # What we consider a blunder
-blunder_threshold = 200
+blunder_threshold = 50
 
 fenComps = 'rrqn2k1/8/pPp4p/2Pp1pp1/3Pp3/4P1P1/R2NB1PP/1Q4K1 w KQkq - 0 1'.split()
 

@@ -143,6 +143,8 @@ function tooltip_draw(d) {
        d.score.toFixed(0) +
        "</li><li>Value: " +
        d.value.toFixed(2) +
+       "</li><li>Blunder: " +
+       d.blunder +
        "</li>Number of children: " +
        d.num_moves +
        "<li></li></ul></div>"
