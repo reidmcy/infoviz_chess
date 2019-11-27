@@ -96,7 +96,7 @@ function click(d, root) {
   } else {
       d.max_group += 1;
   }
-  
+
   if (d._all_children) {
         d.children = d._all_children.filter(function (t) {return t.score_group <= d.max_group;});
         update(d, root);
@@ -142,11 +142,9 @@ function mouseover(d, root, node) {
       d.color = stroke_select_colour;
       d = d.parent;
     }
-
-    d3.selectAll("path")
-        .style("stroke", function(d) { return d.target.color;});
     update(d, root);
   }
+  d3.selectAll("path").style("stroke", function(d) { return d.target.color;});
 }
 
 function mouseout(d, root, node) {
@@ -155,12 +153,9 @@ function mouseout(d, root, node) {
       fill: node_unselect_colour
     });
     tooltip.style("visibility", "hidden");
-    svg.selectAll("path.link").style("stroke", function(d) {
-      d.target.color = interpolateColor(high_val_colour_lines, low_val_colour_lines, d.target.value);
-      return d.target.color;
-    });
     update(d, root);
   }
+  svg.selectAll("path.link").style("stroke", function(d) { d.target.color = interpolateColor(high_val_colour_lines, low_val_colour_lines, d.target.value); return d.target.color; });
 }
 
 function nodeTopText(d) {
@@ -272,6 +267,10 @@ function update(source, root) {
     .insert("path", "g")
     .attr("class", "link")
     .style("stroke-width", function(d) { return  d.target.value  * d.target.value  *(d.target.value * 10) * d.target.value  +1 ;})
+    .style("stroke", function(d) {
+      d.target.color = interpolateColor(high_val_colour_lines, low_val_colour_lines, d.target.value);
+      return d.target.color;
+    })
     .attr("d", function(d) {
       var o = {
         x: source.x0,
