@@ -20,3 +20,19 @@ document.getElementById("startBtn").onclick = function () {
 };
 
 document.getElementById("fen_input").value = Chessboard.objToFen(board.position());
+
+function update_board(new_fen) {
+    board = Chessboard(
+                        'board', {
+                        position : new_fen,
+                        draggable : true,
+                        sparePieces  : true,
+                        dropOffBoard : 'trash',
+                        onChange : onChange,
+                    })
+}
+
+document.dropdown_form.tricky_lines_dropdown.onChange = function (d) {
+    conosole.log(d);
+    update_board(d.options[d.options.selectedIndex].value);
+}

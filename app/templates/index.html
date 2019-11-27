@@ -20,12 +20,15 @@
      <button id="flipBtn">Flip Board</button>
      </div>
      <div class="dropdown">
-         <select name ="tricky_lines_dropdown" id="tricky_lines_dropdown">
+         <form name="dropdown_form">
+         <select name ="tricky_lines_dropdown" id="tricky_lines_dropdown" onChange = "update_board(document.dropdown_form.tricky_lines_dropdown.options[document.dropdown_form.tricky_lines_dropdown.options.selectedIndex].value);">
+          <option value="start"> Interesting Boards</option>
           <option value="rnbqkb1r/pp2pppp/2p2n2/3p4/3P4/3BP3/PPPN1PPP/R1BQK1NR b KQkq - 3 4">rnbqkb1r/pp2pppp/2p2n2/3p4/3P4/3BP3/PPPN1PPP/R1BQK1NR b KQkq - 3 4</option>
           <option value="rnbq1rk1/ppppbppp/5n2/1B2Q3/4P3/8/PPPP1PPP/RNB1K1NR w KQ - 3 5">rnbq1rk1/ppppbppp/5n2/1B2Q3/4P3/8/PPPP1PPP/RNB1K1NR w KQ - 3 5</option>
           <option value="r1bqkbnr/1p1p1ppp/p1n1p3/2p5/2B1P3/2N2Q2/PPPP1PPP/R1B1K1NR w KQkq - 0 5">r1bqkbnr/1p1p1ppp/p1n1p3/2p5/2B1P3/2N2Q2/PPPP1PPP/R1B1K1NR w KQkq - 0 5</option>
           <option value="rnbqkbnr/ppp3pp/4p3/3pP3/5P2/8/PPP3PP/RNBQKBNR b KQkq - 0 5">rnbqkbnr/ppp3pp/4p3/3pP3/5P2/8/PPP3PP/RNBQKBNR b KQkq - 0 5</option>
         </select>
+    </form>
      </div>
     </div>
 
