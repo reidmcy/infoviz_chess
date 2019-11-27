@@ -151,7 +151,12 @@ def get_start(fen):
         'parent_fen': fen,
         'fen' : fen,
         'num_moves' : len(list(board.legal_moves)),
-        'children': get_children(fen),
+
         'is_white' : active_is_white(board.fen()),
     }
+    try:
+        c['children'] = get_children(fen)
+    except chess.engine.EngineTerminatedError:
+        c['children'] = 0
+        c['num_moves'] = 0,
     return c
