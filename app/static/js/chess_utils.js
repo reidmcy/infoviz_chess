@@ -110,14 +110,8 @@ function click(d, root) {
   }
 }
 
-function mouseover(d, root, node) {
-  // Use D3 to select element, change color and size
-  if (!flag_mouse) {
-    d3.select(node).attr({
-      fill: "#DB838C"
-    });
-    tooltip
-   .html(
+function tooltip_draw(d) {
+    tooltip.html(
      "<div class='w3-container'  align='center'><h2>Node info</h2><ul class='w3-ul w3-large'><li> Node name: " +
        d.name +
        "</li><li>Is main line: " +
@@ -138,6 +132,15 @@ function mouseover(d, root, node) {
                         //sparePieces = true,
                         //onDragMove = onDragMove,
                         );
+}
+
+function mouseover(d, root, node) {
+  // Use D3 to select element, change color and size
+  if (!flag_mouse) {
+    d3.select(node).attr({
+      fill: "#DB838C"
+    });
+    tooltip_draw(d)
     while (d.parent) {
       d.color = stroke_select_colour;
       d = d.parent;
@@ -316,6 +319,8 @@ function draw_tree(root) {
 
     //root.children.forEach(collapse);
     click(root, root);
+
     update(root, root);
     d3.select(self.frameElement).style("height", "1000");
+    tooltip_draw(root);
 }
