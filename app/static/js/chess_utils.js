@@ -1,9 +1,13 @@
 function collapse(d) {
-  if (d.children) {
+  if (d._all_children) {
     d._children = d.children;
     d._children.forEach(collapse);
     d.children = null;
   }
+}
+
+function nodeSort(a, b){
+    return a.sort_index > b.sort_index;
 }
 
 function separation(a, b) {
@@ -41,8 +45,15 @@ function interpolateColor(color1, color2, factor) {
     return result + ')';
 };
 
+function transition_start() {
+  if (flag_child_update) {
+      flag_mouse = true;
+  }
+}
+
 function transition_over() {
   flag_mouse = false;
+  flag_child_update = false;
 }
 
 //Redraw for zoom
@@ -72,21 +83,28 @@ function draw_node(node){
       });
 }
 
+function group_filter(node, max_group) {
+    return node.score_group <= max_group;
+}
+
 // Toggle children on click.
 function click(d, root) {
-  flag_mouse = true;
-  if (d.children) {
-        d._children = d.children;
-        d.children = null;
-        update(d, root);
-    } else if (d._children) {
-        d.children = d._children;
-        d._children = null;
+  if (isNaN(d.max_group)) {
+      d.max_group = 0;
+  } else if (d.max_group == 2) {
+      d.max_group = -1;
+  } else {
+      d.max_group += 1;
+  }
+  
+  if (d._all_children) {
+        d.children = d._all_children.filter(function (t) {return t.score_group <= d.max_group;});
         update(d, root);
     } else {
+      flag_child_update = true;
       d3.json('/board/' + d.fen, function(data) {
-                    d.children = data;
-                    d._children = null;
+                    d._all_children = data
+                    d.children = d._all_children.filter(function (t) {return t.score_group <= d.max_group;});
                     update(d, root);
                 });
   }
@@ -145,12 +163,25 @@ function mouseout(d, root, node) {
   }
 }
 
-function nodeText(d) {
+function nodeTopText(d) {
     if (d._children && Object.keys(d._children).length > 0) {
         return d.name;// + ' (' + Object.keys(d._children).length + ')';
     } else {
         return  d.name;
     }
+}
+
+function nodeCenterText(d) {
+    var next_count;
+
+    if (d.max_group == 2) {
+        console.log('in' + d.max_group);
+        next_count = " (-" + d.num_moves + ')';
+    } else {
+        console.log('update' + d.max_group);
+        next_count =  " (+" +  Math.ceil(d.num_moves/3) + ')';
+    }
+    return d.num_moves + next_count;
 }
 
 function update(source, root) {
@@ -188,13 +219,24 @@ function update(source, root) {
     .attr("y", rectH * -.5)
     .attr("dy", ".35em")
     .attr("text-anchor", "middle")
-    .style("fill", text_colour)
+    .style("fill", text_top_colour)
     .style("fill-opacity", 1)
-    .text(nodeText);
+    .text(nodeTopText);
+
+    nodeEnter
+      .append("text")
+      .attr("x", function(d) {return nodeWidth(d) / 2;} )
+      .attr("y", rectH * .5)
+      .attr("dy", ".35em")
+      .attr("text-anchor", "middle")
+      .style("fill", text_middle_colour)
+      .style("fill-opacity", 1)
+      .text(nodeCenterText);
 
   // Transition nodes to their new position.
   var nodeUpdate = node
     .transition()
+    .each("start", transition_start)
     .each("end", transition_over)
     .duration(duration)
     .attr("transform", function(d) {
@@ -275,8 +317,8 @@ function draw_tree(root) {
     root.x0 = 1000;
     root.y0 = height / 2;
 
-    root.children.forEach(collapse);
-
+    //root.children.forEach(collapse);
+    click(root, root);
     update(root, root);
     d3.select(self.frameElement).style("height", "1000");
 }

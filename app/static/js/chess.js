@@ -21,7 +21,8 @@ node_seperationW = minWidth + rectW;
 node_seperationH = rectH + 10;
 dist_between_nodes = 100;
 
-text_colour = "blue"
+text_top_colour = "blue"
+text_middle_colour = "red"
 
 stroke_select_colour = "#DB838C";
 stroke_not_select_colour = "gray";
@@ -41,10 +42,12 @@ white_colour_nodes = [100, 100, 100]; // TODO
 
 //D3 stuff
 var flag_mouse = false;
+var flag_child_update = false;
 
 var tree = d3.layout.tree()
         .nodeSize([node_seperationW, node_seperationH])
-        .separation(separation);
+        .separation(separation)
+        .sort(nodeSort);
 
 //The next block of code appends our SVG working area to the body of our web page and creates a group elements (<g>) that will contain our svg objects (our nodes, text and links).
 var svg = d3

@@ -87,12 +87,15 @@ def engine_query(fen):
 
     parent_fen = board.fen()
 
-    for i, c in enumerate(children):
+    first_index = len(children) // 3
+    second_index = len(children) // 3 * 2
+
+    for i, c in enumerate(sorted(children, key = lambda x : x['score'], reverse = True)):
         move = c['move']
         c['name'] = board.san(board.parse_uci(move))
         board.push_uci(move)
+        c['score_group'] = 0 if i < first_index else 1 if i < second_index else 2
         c['uci_move'] = move
-
         c['parent_fen'] =  parent_fen
         c['fen'] =  board.fen()
         c['is_white'] = active_is_white(board.fen())
@@ -105,6 +108,8 @@ def engine_query(fen):
             c_ret.append(c)
         else:
             c_ret.insert(0, c)
+    for i, c in enumerate(c_ret):
+        c['sort_index'] = i
     return c_ret
 
 @functools.lru_cache(maxsize = 1028)
