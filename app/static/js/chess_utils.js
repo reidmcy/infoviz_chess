@@ -76,7 +76,7 @@ function draw_node(node){
     node.append("rect")
       .attr("width", nodeWidth)
       .attr("height", rectH)
-      .attr("stroke", node_line_colour)
+      .attr("stroke", function(d) { return d.is_white? node_stroke_colour_white : node_stroke_colour_black;})
       .attr("stroke-width", 1)
       .style("fill", function(d) {
           return interpolateColor(white_colour_nodes, black_colour_nodes, .5 - (d.abs_score / 100));
@@ -170,10 +170,8 @@ function nodeCenterText(d) {
     var next_count;
 
     if (d.max_group == 2) {
-        console.log('in' + d.max_group);
         next_count = " (-" + d.num_moves + ')';
     } else {
-        console.log('update' + d.max_group);
         next_count =  " (+" +  Math.ceil(d.num_moves/3) + ')';
     }
     return d.num_moves + next_count;

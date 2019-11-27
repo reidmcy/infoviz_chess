@@ -27,10 +27,11 @@ text_middle_colour = "red"
 stroke_select_colour = "#DB838C";
 stroke_not_select_colour = "gray";
 
-node_line_colour = 'black'
+node_stroke_colour_black = 'black'
+node_stroke_colour_white = 'white'
 node_unselect_colour = 'black'
 
-background_colour = "rbg(5, 5, 5)";
+background_colour = "#669999";
 primary_colour = "rbg(0, 0, 200)";
 
 high_val_colour_lines = [40, 255, 0]//[255, 238, 255]; // TODO

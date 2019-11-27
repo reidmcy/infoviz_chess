@@ -139,25 +139,19 @@ def get_children(fen):
 
 
 def get_start(fen):
-
-    return {
-        'depth': 20,
-        'seldepth': 1,
-        'multipv': 1,
-        'score': 0,
-        'abs_score' : 0.0,
-        'nodes': 1301973,
-        'nps': 1299374,
-        'tbhits': 0,
-        'time': 1.002,
-        'hashfull': 607,
-        'move': 'root',
+    board = chess.Board(fen)
+    c = {
+        'move': 'start',
         'primary': True,
         'blunder': False,
         'value': 1.0,
+        'score' : 0.0,
+        'abs_score' : 0.0,
         'name': 'root',
         'parent_fen': fen,
         'fen' : fen,
-        'num_moves' : 20,
+        'num_moves' : len(list(board.legal_moves)),
         'children': get_children(fen),
-     }
+        'is_white' : active_is_white(board.fen()),
+    }
+    return c
