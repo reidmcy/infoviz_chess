@@ -2,6 +2,16 @@ function onChange (oldPos, newPos) {
   document.getElementById("fen_input").value = Chessboard.objToFen(newPos);
 }
 
+var board_colour = ' w';
+
+function flip_colour() {
+    if (board_colour == ' w') {
+        board_colour = ' b';
+    } else {
+        board_colour = ' w';
+    }
+}
+
 var board = Chessboard(
                     'board', {
                     position : 'start',
@@ -13,10 +23,10 @@ var board = Chessboard(
 
 $('#resetBtn').on('click', board.start)
 $('#clearBtn').on('click', board.clear)
-$('#flipBtn').on('click', board.flip)
+$('#flipBtn').on('click', function () {board.flip(); flip_colour(); })
 
 document.getElementById("startBtn").onclick = function () {
-    location.href = "/root/" + Chessboard.objToFen(board.position());
+    location.href = "/root/" + Chessboard.objToFen(board.position()) + board_colour;
 };
 
 document.getElementById("fen_input").value = Chessboard.objToFen(board.position());
