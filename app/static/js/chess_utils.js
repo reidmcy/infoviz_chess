@@ -77,7 +77,7 @@ function draw_node(node){
       .attr("width", nodeWidth)
       .attr("height", rectH)
       .attr("stroke", function(d) { return d.is_white? node_stroke_colour_white : node_stroke_colour_black;})
-      .attr("stroke-width", 1)
+      .attr("stroke-width", 3)
       .style("fill", function(d) {
           return interpolateColor(white_colour_nodes, black_colour_nodes, .5 - (d.abs_score / 100));
       });
@@ -125,11 +125,14 @@ function contractNode(d, root) {
 
 // Toggle children on click.
 function click(d, root) {
+  d.clicked = true;
   if (d.max_group == 2) {
       d.max_group = -1;
       updateNodeChildren (d, root);
+      d.clicked = false;
   } else {
       expandNode(d, root);
+      d.clicked = false;
   }
 }
 
@@ -257,6 +260,15 @@ function update(source, root) {
     .duration(duration)
     .attr("transform", function(d) {
       return "translate(" + d.x + "," + d.y + ")";
+    });
+    nodeUpdate.select('rect')
+    .style("fill", function(d) {
+        if (d.clicked) {
+            return 'black';
+        }
+        else {
+            return interpolateColor(white_colour_nodes, black_colour_nodes, .5 - (d.abs_score / 100));
+        }
     });
 
   // Transition exiting nodes to the parent's new position.
