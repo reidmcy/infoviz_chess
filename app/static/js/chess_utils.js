@@ -365,3 +365,6 @@ function draw_tree(root) {
 
 $('#expandBtn').on('click', function () {return expandNode(current_node, root_node)})
 $('#contractBtn').on('click', function () {return contractNode(current_node, root_node)})
+$('#rootBtn').on('click', function () {
+   location.href = "/root/" + current_node.fen;
+});
