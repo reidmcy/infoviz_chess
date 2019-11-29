@@ -1,9 +1,12 @@
 import chess
 import chess.engine
 
+import random
+
 import sys
 import json
 import functools
+import os.path
 
 if sys.platform == 'darwin':
     engine_path = 'stockfish/stockfish-10-64'
@@ -12,6 +15,7 @@ else:
 
 cache_path = 'sf_cache.json'
 
+cpLookup_simple = None
 sf_cache = None
 
 # How long the engine takes per query
@@ -27,6 +31,21 @@ engine_options = {'threads' : 8}
 blunder_threshold = 50
 
 fenComps = 'rrqn2k1/8/pPp4p/2Pp1pp1/3Pp3/4P1P1/R2NB1PP/1Q4K1 w KQkq - 0 1'.split()
+
+def cp_to_winrate(cp, lookup_file = os.path.join(os.path.dirname(__file__), 'cp_winrate_lookup_simple.json')):
+    global cpLookup_simple
+    try:
+        cp = int(float(cp) / 10) / 10
+    except OverflowError:
+        return float("nan")
+    if cpLookup_simple is None:
+        with open(lookup_file) as f:
+            cpLookup_str = json.load(f)
+            cpLookup_simple = {float(k) : wr for k, wr in cpLookup_str.items()}
+    try:
+        return cpLookup_simple[cp]
+    except KeyError:
+        return float("nan")
 
 def active_is_white(fen_str):
     return fen_str.split(' ')[1] == 'w'
@@ -67,16 +86,26 @@ def gen_child_info(board, engine, max_children = 20):
         )
     children = sorted([uci_to_dict(r) for r in results], key = lambda x : x['score'], reverse=True)
     top_score = children[0]['score']
+
+    l_pop = [0, 0] + list(range(min(len(children), 4)))
+    m_pop_index = random.choice(l_pop)
+
     for i, c in enumerate(children):
         if i == 0:
             c['primary'] = True
             c['blunder'] = False
             c['value'] = 1.0
+            c['trick_line'] = False
+            c['trick_opp_line'] = random.random() > .75
+            c['popular'] = i == m_pop_index
         else:
             delta = top_score - c['score']
             c['primary'] = False
             c['blunder'] = delta > blunder_threshold
             c['value'] = 1 / (delta / 100 + 1)
+            c['trick_line'] = c['value'] > random.random()
+            c['trick_opp_line'] = c['value'] * 1.2 < random.random()
+            c['popular'] = i == m_pop_index
     return children
 
 def engine_query(fen):
@@ -96,6 +125,7 @@ def engine_query(fen):
         board.push_uci(move)
         c['score_group'] = 0 if i < first_index else 1 if i < second_index else 2
         c['uci_move'] = move
+        c['win_prob'] = cp_to_winrate(c['score'])
         c['parent_fen'] =  parent_fen
         c['fen'] =  board.fen()
         c['is_white'] = active_is_white(board.fen())
@@ -146,12 +176,13 @@ def get_start(fen):
         'blunder': False,
         'value': 1.0,
         'score' : 0.0,
+        'win_prob' : .5,
         'abs_score' : 0.0,
         'name': 'root',
         'parent_fen': fen,
+        'trick_line' : False,
         'fen' : fen,
         'num_moves' : len(list(board.legal_moves)),
-
         'is_white' : active_is_white(board.fen()),
     }
     try:

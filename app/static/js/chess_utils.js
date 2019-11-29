@@ -140,14 +140,20 @@ function tooltip_draw(d) {
     tooltip.html(
      "<div class='w3-container'  align='center'><h2>Node info</h2><ul class='w3-ul w3-large'><li> Node name: " +
        d.name +
-       "</li><li>Is main line: " +
-       d.primary +
-       "</li><li>Score: " +
-       d.score.toFixed(0) +
-       "</li><li>Value: " +
-       d.value.toFixed(2) +
-       "</li><li>Blunder: " +
+       "</li><li>Centipawn value: " +
+       d.abs_score.toFixed(0) +
+       //"</li><li>Value: " +
+       //d.value.toFixed(2) +
+       "</li><li>Win prob: " +
+       d.win_prob.toFixed(2) +
+       "</li><li>Is Blunder: " +
        d.blunder +
+       "</li><li>Is popular: " +
+       d.popular +
+       "</li><li>Is Tricky: " +
+       d.trick_line +
+       "</li><li>Is Tricky for Opponent: " +
+       d.trick_opp_line +
        "</li>Number of children: " +
        d.num_moves +
        "<li></li></ul></div>"
