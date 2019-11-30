@@ -143,6 +143,9 @@ function click(d, root) {
 function tooltip_draw(d) {
   d3.select("#myBar").style("width", parseInt(d.value*100) + "%")
   d3.select("#myBar").html(parseInt(d.value*100) + "%")
+  d3.select("#myBar").style('background-color', d.is_white ? progress_bar_white_active : progress_bar_black_active)
+  d3.select("#myBar").style('color', d.is_white ?  progress_bar_black_active : progress_bar_white_active)
+  d3.select(".progress").style('background-color', d.is_white ? progress_bar_black_active : progress_bar_white_active)
 
     tooltip.html(
     //  "<div id='mynodeinfo' class='w3-container' ><h3>Node info</h3><ul class='w3-ul w3-medium'><li> Node name: " +
@@ -182,7 +185,7 @@ function tooltip_draw(d) {
     + d.num_moves +
     "</td></tr></tbody></table>"
    )
-   
+
    .style("position", "relative").style("visibility", "visible").style("display", "block").style("text-align", "center").style("margin","auto");
     var board1 = Chessboard( 'board', position = d.fen);
 }

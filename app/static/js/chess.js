@@ -34,6 +34,9 @@ node_unselect_colour = 'black'
 background_colour = "#8AC6D0";
 primary_colour = "rbg(0, 0, 200)";
 
+progress_bar_white_active = 'white'
+progress_bar_black_active = 'black'
+
 high_val_colour_lines = [245, 222, 178]//[255, 238, 255]; // TODO
 low_val_colour_lines = [128, 0, 128]; // TODO
 blunder_dash_style = "(5,5)"
