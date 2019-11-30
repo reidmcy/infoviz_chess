@@ -39,6 +39,10 @@ table td{
   
 }
 
+.btn:active {
+  box-shadow: none;
+}
+
 /* Create two equal columns that floats next to each other */
 #tree_part {
   float: left;

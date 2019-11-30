@@ -45,7 +45,7 @@ def cp_to_winrate(cp, lookup_file = os.path.join(os.path.dirname(__file__), 'cp_
     try:
         return cpLookup_simple[cp]
     except KeyError:
-        return float("nan")
+        return None
 
 def active_is_white(fen_str):
     return fen_str.split(' ')[1] == 'w'
