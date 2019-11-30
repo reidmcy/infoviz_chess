@@ -179,13 +179,13 @@ function tooltip_draw(d) {
     + d.abs_score.toFixed(0)+
     "</td></tr><tr><th scope='row'>Win prob</th><td>"
     + d.win_prob.toFixed(2) +
-    "</td></tr><tr><th scope='row'>Is Blunder</th><td>"
+    "</td></tr><tr><th scope='row'>Blunder</th><td>"
     + d.blunder +
-    "</td></tr><tr><th scope='row'>Is popular</th><td>"
+    "</td></tr><tr><th scope='row'>popular</th><td>"
     + d.popular +
-    "</td></tr><tr><th scope='row'>Is Tricky</th><td>"
+    "</td></tr><tr><th scope='row'>Tricky</th><td>"
     + d.trick_line +
-    "</td></tr><tr><th scope='row'>Is Tricky for Opponent</th><td>"
+    "</td></tr><tr><th scope='row'>Tricky for Opponent</th><td>"
     + d.trick_opp_line +
     "</td></tr><tr><th scope='row'>Number of children</th><td>"
     + d.num_moves +

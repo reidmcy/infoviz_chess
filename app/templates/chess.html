@@ -20,15 +20,20 @@
           </div>
           <div class="column" id="info_part">
             <h3 style="text-align:center"> Chess Board</h3>
-            <div id="board"></div>
+            <div class="board2" id="board"></div>
               <div class="progress">
                 <div id = "myBar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:70%"></div>
               </div>
-              <button type="button" class="btn btn-info" id="expandBtn">Expand Node</button>
-            <button type="button" class="btn btn-info" id="contractBtn">Contract Node</button>
-            <button type="button" class="btn btn-info" id="expandnextBtn">Expand Next Node</button>
-            <button type="button" class="btn btn-info" id="centerBtn">Center to Node</button>
-            <button type="button" class="btn btn-info"  id="rootBtn">Set as Root</button>
+              <div class="mybtn centerbtn">
+                  <button type="button" class="btn btn-info" id="expandBtn">Expand Node</button>
+                  <button type="button" class="btn btn-info" id="contractBtn">Contract Node</button>
+                  <button type="button" class="btn btn-info disabled" id="expandnextBtn">Expand Next Node</button>
+              </div>
+              <div class="mybtn centerbtn">
+                  <button type="button" class="btn btn-info disabled" id="centerBtn">Center to Node</button>
+                  <button type="button" class="btn btn-info"  id="rootBtn">Set as Root</button>
+              </div>
+            
             <!-- <button type="button" class="btn btn-info" type="button" class="btn btn-info">Info</button> -->
               </div>
                 <nav role="navigation" >

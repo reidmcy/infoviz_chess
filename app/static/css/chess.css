@@ -5,7 +5,7 @@
   color: #272932;
   
 }
-#board{
+.board2{
   display: block;
   text-align: center;
   margin: auto;
@@ -22,6 +22,13 @@ table td{
 
 .table{
   margin: 10px;
+}
+.mybtn{
+  margin-bottom: 1%;
+}
+.centerbtn{
+  display: block;
+  text-align: center;
 }
 .progress{
   display: block;
