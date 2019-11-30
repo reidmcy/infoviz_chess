@@ -173,7 +173,7 @@ function tooltip_draw(d) {
     //    "</li>Number of children: " +
     //    d.num_moves +
     //    "<li></li></ul></div>"
-    "<table class='table table-striped table-bordered'> <thead><tr><th scope='col' >Attribute</th><th scope='col'>Value</th></tr></thead><tbody><tr> <th scope='row'>Node name</th><td>"
+    "<table class='table table-striped table-bordered'> <tbody><tr> <th scope='row'>Node name</th><td>"
     + d.name +
     "</td></tr><tr><th scope='row'>Centipawn value</th><td>"
     + d.abs_score.toFixed(0)+

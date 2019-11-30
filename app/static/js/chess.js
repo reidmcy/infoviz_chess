@@ -37,8 +37,8 @@ primary_colour = "rbg(0, 0, 200)";
 progress_bar_white_active = 'white'
 progress_bar_black_active = 'black'
 
-high_val_colour_lines = [245, 222, 178]//[255, 238, 255]; // TODO
-low_val_colour_lines = [128, 0, 128]; // TODO
+high_val_colour_lines = [240, 40, 0]//[255, 238, 255]; // TODO
+low_val_colour_lines = [0, 40, 240]; // TODO
 blunder_dash_style = "(5,5)"
 nonblunder_dash_style = "(1)"
 
