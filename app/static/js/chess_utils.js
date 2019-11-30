@@ -76,7 +76,7 @@ function draw_node(node){
     node.append("rect")
       .attr("width", nodeWidth)
       .attr("height", rectH)
-      .attr("stroke", function(d) { return d.is_white? node_stroke_colour_white : node_stroke_colour_black;})
+      .attr("stroke", function(d) { return d.is_white? node_stroke_colour_black : node_stroke_colour_white;})
       .attr("stroke-width", 3)
       .style("fill", function(d) {
           return interpolateColor(white_colour_nodes, black_colour_nodes, .5 - (d.abs_score / 100));
