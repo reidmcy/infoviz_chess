@@ -15,12 +15,13 @@
 
       <div class="row">
           <div class="column" id="tree_part">
-            <h3 style="text-align: center; ">Chess Move Tree</h3>
-            <h4 style="text-align: center; "> Tina and Reid for info viz</h4>
+            <h3 style="text-align: center; ">Chess Move Tree Visualizer</h3>
+            <h4 style="text-align: center; "> By Tina Sedaghat and Reid McIlroy-Young for Information Visualization CSC2537</h4>
           </div>
           <div class="column" id="info_part">
             <h3 style="text-align:center"> Chess Board</h3>
             <div class="board2" id="board"></div>
+
               <div class="progress">
                 <div id = "myBar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:70%"></div>
               </div>
@@ -44,15 +45,15 @@
                       <span></span>
                       <span></span>
 
-                      <ul class="legend-labels" id="menu">
-                        <p style="text-align: center;">Information panel</p>
+                      <ul class="legend-labels" id="menu" style="width:30%">
+                        <p style="text-align: center;">Help</p>
                           <table class="table">
-                              
+
                               <tbody>
                                 <tr>
                                   <td>
                                       <p>Better Moves for black</p>
-                                      <div class="gradient1"></div>
+                                      <div class="gradient1" ></div>
                                       <p>Better Moves for white</p>
                                       <!-- <p>Test texst test </p> -->
                                   </td>
@@ -62,13 +63,16 @@
                                       <p>Worse Moves</p>
                                       <!-- <p>Test texst test </p> -->
                                   </td>
-                                  
+
                                 </tr>
-                              
+
                               </tbody>
                             </table>
-                            <p>dskdjskdh</p>
-                        
+
+                            <p>Better moves for the active player have thicker lines</p>
+                            <p>Each square on the tree is legal move, with the name of the move and number of childeren shown on it. You can hover over the nodes to see their chess boards and get more information on node information panel.</p>
+                            <p>Clicking on a square will show some of the next moves, and on the fourth click all the them will be re-hidden.</p>
+
                       </ul>
                     </div>
 
