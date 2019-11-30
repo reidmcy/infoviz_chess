@@ -140,6 +140,12 @@ function click(d, root) {
   }
 }
 
+function score_to_10range(s) {
+    var ret = Math.min(s, -1000)
+    ret = Math.max(ret, 1000)
+    return ret / 100;
+}
+
 function tooltip_draw(d) {
   d3.select("#myBar").style("width", parseInt(d.value*100) + "%")
   d3.select("#myBar").html(parseInt(d.value*100) + "%")
@@ -237,7 +243,7 @@ function nodeCenterText(d) {
     } else {
         next_count =  " (+" +  Math.ceil(d.num_moves/3) + ')';
     }
-    return d.num_moves + next_count;
+    return '(' + d.num_moves + ')';// + next_count;
 }
 
 function update(source, root) {
@@ -272,20 +278,26 @@ function update(source, root) {
   nodeEnter
     .append("text")
     .attr("x", function(d) {return nodeWidth(d) / 2;} )
-    .attr("y", rectH * -.5)
+    .attr("y",rectH * .3)
     .attr("dy", ".35em")
     .attr("text-anchor", "middle")
-    .style("fill", text_top_colour)
+    .style("fill", function (d) {return d.abs_score > 0  ? 'white' : 'black';})
     .style("fill-opacity", 1)
+    .style("font-size", '14pt')
     .text(nodeTopText);
+
+    nodeEnter
+      .append("hr")
+      .style("background-color", 'red')
+      .style("fill-opacity", 1);
 
     nodeEnter
       .append("text")
       .attr("x", function(d) {return nodeWidth(d) / 2;} )
-      .attr("y", rectH * .5)
+      .attr("y", rectH * .8)
       .attr("dy", ".35em")
       .attr("text-anchor", "middle")
-      .style("fill", text_middle_colour)
+      .style("fill", function (d) {return d.abs_score > 0  ? 'white' : 'black';})
       .style("fill-opacity", 1)
       .text(nodeCenterText);
 
