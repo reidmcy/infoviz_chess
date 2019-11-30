@@ -31,11 +31,11 @@ node_stroke_colour_black = 'black'
 node_stroke_colour_white = 'white'
 node_unselect_colour = 'black'
 
-background_colour = "#669999";
+background_colour = "#8AC6D0";
 primary_colour = "rbg(0, 0, 200)";
 
-high_val_colour_lines = [40, 255, 0]//[255, 238, 255]; // TODO
-low_val_colour_lines = [200, 75, 255]; // TODO
+high_val_colour_lines = [245, 222, 178]//[255, 238, 255]; // TODO
+low_val_colour_lines = [128, 0, 128]; // TODO
 blunder_dash_style = "(5,5)"
 nonblunder_dash_style = "(1)"
 

@@ -88,13 +88,15 @@ function group_filter(node, max_group) {
 }
 
 function updateNodeChildren (d, root) {
+  flag_mouse = true;
+  flag_child_update = true;
     if (d._all_children) {
           d.children = d._all_children.filter(function (t) {
               return t.score_group <= d.max_group;
           });
           update(d, root);
       } else {
-        flag_child_update = true;
+        // flag_child_update = true;
         d3.json('/board/' + d.fen, function(data) {
                       d._all_children = data
                       d.children = d._all_children.filter(function (t) {
@@ -106,6 +108,7 @@ function updateNodeChildren (d, root) {
 }
 
 function expandNode(d, root) {
+  flag_mouse = true;
     if (isNaN(d.max_group)) {
         d.max_group = 0;
     } else {
@@ -125,6 +128,7 @@ function contractNode(d, root) {
 
 // Toggle children on click.
 function click(d, root) {
+  flag_mouse = true;
   d.clicked = true;
   if (d.max_group == 2) {
       d.max_group = -1;
@@ -137,28 +141,49 @@ function click(d, root) {
 }
 
 function tooltip_draw(d) {
+  d3.select("#myBar").style("width", parseInt(d.value*100) + "%")
+  d3.select("#myBar").html(parseInt(d.value*100) + "%")
+
     tooltip.html(
-     "<div class='w3-container'  align='center'><h2>Node info</h2><ul class='w3-ul w3-large'><li> Node name: " +
-       d.name +
-       "</li><li>Centipawn value: " +
-       d.abs_score.toFixed(0) +
-       //"</li><li>Value: " +
-       //d.value.toFixed(2) +
-       "</li><li>Win prob: " +
-       d.win_prob.toFixed(2) +
-       "</li><li>Is Blunder: " +
-       d.blunder +
-       "</li><li>Is popular: " +
-       d.popular +
-       "</li><li>Is Tricky: " +
-       d.trick_line +
-       "</li><li>Is Tricky for Opponent: " +
-       d.trick_opp_line +
-       "</li>Number of children: " +
-       d.num_moves +
-       "<li></li></ul></div>"
+    //  "<div id='mynodeinfo' class='w3-container' ><h3>Node info</h3><ul class='w3-ul w3-medium'><li> Node name: " +
+    //    d.name +
+    //    "</li><li>Centipawn value: " +
+    //    d.abs_score.toFixed(0) +
+    //    //"</li><li>Value: " +
+    //    //d.value.toFixed(2) +
+    //    "</li><li>Win prob: " +
+    //    d.win_prob.toFixed(2) +
+    //    "</li><li>Is Blunder: " +
+    //    d.blunder +
+    //    "</li><li>Is popular: " +
+    //    d.popular +
+    //    "</li><li>Is Tricky: " +
+    //    d.trick_line +
+    //    "</li><li>Is Tricky for Opponent: " +
+    //    d.trick_opp_line +
+    //    "</li>Number of children: " +
+    //    d.num_moves +
+    //    "<li></li></ul></div>"
+    "<table class='table table-striped table-bordered'> <thead><tr><th scope='col' >Attribute</th><th scope='col'>Value</th></tr></thead><tbody><tr> <th scope='row'>Node name</th><td>"
+    + d.name +
+    "</td></tr><tr><th scope='row'>Centipawn value</th><td>"
+    + d.abs_score.toFixed(0)+
+    "</td></tr><tr><th scope='row'>Win prob</th><td>"
+    + d.win_prob.toFixed(2) +
+    "</td></tr><tr><th scope='row'>Is Blunder</th><td>"
+    + d.blunder +
+    "</td></tr><tr><th scope='row'>Is popular</th><td>"
+    + d.popular +
+    "</td></tr><tr><th scope='row'>Is Tricky</th><td>"
+    + d.trick_line +
+    "</td></tr><tr><th scope='row'>Is Tricky for Opponent</th><td>"
+    + d.trick_opp_line +
+    "</td></tr><tr><th scope='row'>Number of children</th><td>"
+    + d.num_moves +
+    "</td></tr></tbody></table>"
    )
-      .style("visibility", "visible");
+   
+   .style("position", "relative").style("visibility", "visible").style("display", "block").style("text-align", "center").style("margin","auto");
     var board1 = Chessboard( 'board', position = d.fen);
 }
 
@@ -177,6 +202,8 @@ function mouseover(d, root, node) {
     update(d, root);
   }
   d3.selectAll("path").style("stroke", function(d) { return d.target.color;});
+  // d3.select("#myBar").style("width", d.score + "%")
+  // d3.select("#myBar").html(d.score + "%")
 }
 
 function mouseout(d, root, node) {
@@ -184,6 +211,7 @@ function mouseout(d, root, node) {
     d3.select(node).attr({
       fill: node_unselect_colour
     });
+    // tooltip_draw(d)
     //tooltip.style("visibility", "hidden");
     update(d, root);
   }

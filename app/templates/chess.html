@@ -4,6 +4,7 @@
     <meta charset="utf-8">
 
     <title>Chess Move Trees</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
     <link rel = "stylesheet" type = "text/css" href = "/static/css/chess.css" />
     <link rel = "stylesheet" type = "text/css" href = "/static/css/chessboard-1.0.0.css" />
     <link rel="stylesheet" href="/static/css/w3.css">
@@ -14,24 +15,25 @@
 
       <div class="row">
           <div class="column" id="tree_part">
-            <h2 style="text-align: center; ">Chess Move Tree</h2>
-            <h3 style="text-align: center; "> Tina and Reid for info viz</h3>
+            <h3 style="text-align: center; ">Chess Move Tree</h3>
+            <h4 style="text-align: center; "> Tina and Reid for info viz</h4>
           </div>
           <div class="column" id="info_part">
-            <h2 style="text-align:center"> Chess Board</h2>
+            <h3 style="text-align:center"> Chess Board</h3>
             <div id="board"></div>
-            <button id="expandBtn">Expand Node</button>
-            <button id="contractBtn">Contract Node</button>
-            <button id="expandnextBtn">Expand Next Node</button>
-            <button id="centerBtn">Center to Node</button>
-          </div>
-
-        </div>
-
+              <div class="progress">
+                <div id = "myBar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:70%"></div>
+              </div>
+              <button type="button" class="btn btn-info" id="expandBtn">Expand Node</button>
+            <button type="button" class="btn btn-info" id="contractBtn">Contract Node</button>
+            <button type="button" class="btn btn-info" id="expandnextBtn">Expand Next Node</button>
+            <button type="button" class="btn btn-info" id="centerBtn">Center to Node</button>
+            <!-- <button type="button" class="btn btn-info" type="button" class="btn btn-info">Info</button> -->
+              </div>
                 <nav role="navigation" >
                     <div id="menuToggle" class="my-legend">
                     <div class="legend-scale" >
-                      <input type="checkbox" />
+                      <input id="checkbox" type="checkbox" />
                       <span></span>
                       <span></span>
                       <span></span>
@@ -45,6 +47,7 @@
 
                   </div>
                   </nav>
+                  </div>
   <!-- load the libraries -->
   <script>
     var start_fen = '{{ start_fen }}';

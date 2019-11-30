@@ -5,13 +5,62 @@
   color: #272932;
   
 }
+#board{
+  display: block;
+  text-align: center;
+  margin: auto;
+  width: 80%;
+}
+
+table th{
+  text-align: left; 
+}
+
+table td{
+  text-align: left; 
+}
+
+.table{
+  margin: 10px;
+}
+.progress{
+  display: block;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  width: 80%;
+}
+
+#mynodeinfo{
+  display: block;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  
+}
 
 /* Create two equal columns that floats next to each other */
 #tree_part {
   float: left;
   width: 70%;
-  background-color:#f6f0f5;
+  background-color:#c1e1e6;
 }
+.progress-bar{
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25) inset;
+}
+/* .progress-bar{
+  background-image:
+	   -webkit-linear-gradient(-45deg, 
+	                           transparent 33%, rgba(0, 0, 0, .1) 33%, 
+	                           rgba(0,0, 0, .1) 66%, transparent 66%),
+	   -webkit-linear-gradient(top, 
+	                           rgba(255, 255, 255, .25), 
+	                           rgba(0, 0, 0, .25)),
+	   -webkit-linear-gradient(left, #09c, #f44);
+
+    border-radius: 2px; 
+    background-size: 35px 20px, 100% 100%, 100% 100%;
+} */
 
 #info_part {
   float: left;
@@ -61,7 +110,7 @@ a {
 } */
 
 #menuToggle {
-  display: block;
+  display: block !important;
   position: relative;
   top: 50px;
   left: 50px;
@@ -73,7 +122,7 @@ a {
 }
 
 #menuToggle input {
-  display: block;
+  display: block !important;
   width: 40px;
   height: 32px;
   position: absolute;
@@ -92,13 +141,13 @@ a {
 * Just a quick hamburger
 */
 #menuToggle span {
-  display: block;
+  display: block !important;
   width: 33px;
   height: 4px;
   margin-bottom: 5px;
   position: relative;
 
-  background: #cdcdcd;
+  background: blue;
   border-radius: 3px;
 
   z-index: 1;
@@ -124,7 +173,7 @@ a {
 #menuToggle input:checked ~ span {
   opacity: 1;
   transform: rotate(45deg) translate(-2px, -1px);
-  background: #232323;
+  background: blue;
 }
 
 /*
@@ -197,7 +246,7 @@ a {
   margin-bottom: 2px;
 }
 .my-legend ul.legend-labels li span {
-  display: block;
+  display: block !important;
   float: left;
   height: 16px !important;
   width: 30px !important;
@@ -205,6 +254,9 @@ a {
   margin-right: 5px;
   margin-left: 0;
   border: 1px solid #999;
+}
+nav{
+  display: block !important;
 }
 .my-legend .legend-source {
   font-size: 70%;
