@@ -76,9 +76,16 @@ table td{
   background-color:#F1F4FF;
 }
 
-.gradient{
+.gradient1{
   /* background: linear-gradient(rgb(66, 97, 97),rgb(216, 255, 239)); */
   background: linear-gradient(black,white);
+  width: 50px;
+  height: 200px;
+}
+
+.gradient2{
+  /* background: linear-gradient(rgb(66, 97, 97),rgb(216, 255, 239)); */
+  background: linear-gradient(rgb(240, 40, 0),rgb(0, 40, 240));
   width: 50px;
   height: 200px;
 }
