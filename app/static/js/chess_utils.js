@@ -46,19 +46,20 @@ function interpolateColor(color1, color2, factor) {
 };
 
 function transition_start() {
-  if (flag_child_update) {
+  if (num_updates > 0) {
       flag_mouse = true;
   }
 }
 
 function transition_over(d) {
-  flag_mouse = false;
-  if (flag_child_update) {
+  num_updates -= 1;
+  if (num_updates < 1) {
       var node = d3.selectAll("rect")
-        .filter(function(n) { return n.fen ==  flag_child_update; });
+        .filter(function(n) { return n.fen ==  child_update_fen; });
       node.style('stroke', function(d) { return d.is_white ? node_stroke_colour_black : node_stroke_colour_white;});
+      flag_mouse = false;
   }
-  flag_child_update = false;
+
 }
 
 //Redraw for zoom
@@ -94,8 +95,9 @@ function group_filter(node, max_group) {
 }
 
 function updateNodeChildren (d, root) {
-  flag_mouse = true;
-  flag_child_update = d.fen;
+    flag_mouse = true;
+    child_update_fen = d.fen;
+    num_updates += 2
     var node = d3.selectAll("rect")
       .filter(function(n) { return n.fen ==  d.fen; });
     node.style('stroke', stroke_select_colour);
@@ -105,7 +107,6 @@ function updateNodeChildren (d, root) {
           });
           update(d, root);
       } else {
-        // flag_child_update = true;
         d3.json('/board/' + d.fen, function(data) {
                       d._all_children = data
                       d.children = d._all_children.filter(function (t) {

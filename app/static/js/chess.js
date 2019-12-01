@@ -47,7 +47,8 @@ white_colour_nodes = [100, 100, 100]; // TODO
 
 //D3 stuff
 var flag_mouse = false;
-var flag_child_update = false;
+var child_update_fen = false;
+var num_updates = 0;
 var current_node;
 var root_node;
 

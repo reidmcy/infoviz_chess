@@ -181,6 +181,8 @@ def get_start(fen):
         'name': 'root',
         'parent_fen': fen,
         'trick_line' : False,
+        'trick_opp_line' : False,
+        'popular' : False,
         'fen' : fen,
         'num_moves' : len(list(board.legal_moves)),
         'is_white' : active_is_white(board.fen()),
