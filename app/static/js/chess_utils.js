@@ -51,8 +51,13 @@ function transition_start() {
   }
 }
 
-function transition_over() {
+function transition_over(d) {
   flag_mouse = false;
+  if (flag_child_update) {
+      var node = d3.selectAll("rect")
+        .filter(function(n) { return n.fen ==  flag_child_update; });
+      node.style('stroke', function(d) { return d.is_white ? node_stroke_colour_black : node_stroke_colour_white;});
+  }
   flag_child_update = false;
 }
 
@@ -74,9 +79,10 @@ function nodeWidth(d) {
 
 function draw_node(node){
     node.append("rect")
+      .attr("fen", function(d) {return d.id;})
       .attr("width", nodeWidth)
       .attr("height", rectH)
-      .attr("stroke", function(d) { return d.is_white? node_stroke_colour_black : node_stroke_colour_white;})
+      .attr("stroke", function(d) { return d.is_white ? node_stroke_colour_black : node_stroke_colour_white;})
       .attr("stroke-width", 3)
       .style("fill", function(d) {
           return interpolateColor(white_colour_nodes, black_colour_nodes, .5 - (d.abs_score / 100));
@@ -89,7 +95,10 @@ function group_filter(node, max_group) {
 
 function updateNodeChildren (d, root) {
   flag_mouse = true;
-  flag_child_update = true;
+  flag_child_update = d.fen;
+    var node = d3.selectAll("rect")
+      .filter(function(n) { return n.fen ==  d.fen; });
+    node.style('stroke', stroke_select_colour);
     if (d._all_children) {
           d.children = d._all_children.filter(function (t) {
               return t.score_group <= d.max_group;
@@ -133,10 +142,9 @@ function click(d, root) {
   if (d.max_group == 2) {
       d.max_group = -1;
       updateNodeChildren (d, root);
-      d.clicked = false;
+
   } else {
       expandNode(d, root);
-      d.clicked = false;
   }
 }
 
@@ -200,9 +208,6 @@ function mouseover(d, root, node) {
   // Use D3 to select element, change color and size
   if (!flag_mouse) {
     current_node = d;
-    d3.select(node).attr({
-      fill: "#DB838C"
-    });
     tooltip_draw(d)
     while (d.parent) {
       d.color = stroke_select_colour;
@@ -309,15 +314,6 @@ function update(source, root) {
     .duration(duration)
     .attr("transform", function(d) {
       return "translate(" + d.x + "," + d.y + ")";
-    });
-    nodeUpdate.select('rect')
-    .style("fill", function(d) {
-        if (d.clicked) {
-            return 'black';
-        }
-        else {
-            return interpolateColor(white_colour_nodes, black_colour_nodes, .5 - (d.abs_score / 100));
-        }
     });
 
   // Transition exiting nodes to the parent's new position.
