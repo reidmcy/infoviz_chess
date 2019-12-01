@@ -87,7 +87,10 @@ function draw_node(node){
       .attr("stroke-width", 3)
       .style("fill", function(d) {
           return interpolateColor(white_colour_nodes, black_colour_nodes, .5 - (d.abs_score / 100));
-      });
+      })
+      .filter(function(d) {return d.mate;})
+      .attr("stroke", function(d) { return !d.is_white ? node_stroke_colour_black : node_stroke_colour_white;})
+      .style("stroke-dasharray", ("3,3"))
 }
 
 function group_filter(node, max_group) {
@@ -359,7 +362,9 @@ function update(source, root) {
         source: o,
         target: o
       });
-    });
+    })
+    .filter(function(d) {return d.target.mate;})
+    .style("stroke-dasharray", ("3,1"));
 
   // Transition links to their new position.
   link

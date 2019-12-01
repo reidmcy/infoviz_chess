@@ -71,7 +71,11 @@ def cpToInt(cpVal):
 
 def uci_to_dict(uci_dict):
     ret_dict = uci_dict.copy()
-    ret_dict['move'] = str(ret_dict['pv'][0])
+    try:
+        ret_dict['move'] = str(ret_dict['pv'][0])
+    except KeyError:
+        #There's a mate here
+        raise
     del ret_dict['pv']
     ret_dict['score'] = cpToInt(ret_dict['score'])
     return ret_dict
@@ -84,7 +88,10 @@ def gen_child_info(board, engine, max_children = 20):
                             multipv = max_children,
                             options = engine_options,
         )
-    children = sorted([uci_to_dict(r) for r in results], key = lambda x : x['score'], reverse=True)
+    try:
+        children = sorted([uci_to_dict(r) for r in results], key = lambda x : x['score'], reverse=True)
+    except KeyError:
+        return []
     top_score = children[0]['score']
 
     l_pop = [0, 0] + list(range(min(len(children), 4)))
@@ -123,11 +130,12 @@ def engine_query(fen):
         move = c['move']
         c['name'] = board.san(board.parse_uci(move))
         board.push_uci(move)
-        c['score_group'] = 0 if i < first_index else 1 if i < second_index else 2
+        c['score_group'] = 0 if c['value'] > .8 else (1 if c['value'] > .5 else 2)
         c['uci_move'] = move
         c['win_prob'] = cp_to_winrate(c['score'])
         c['parent_fen'] =  parent_fen
         c['fen'] =  board.fen()
+        c['mate'] = board.is_checkmate()
         c['is_white'] = active_is_white(board.fen())
         c['abs_score'] = c['score'] if c['is_white'] else -1 * c['score']
         c['num_moves'] =  len(list(board.legal_moves))
@@ -184,6 +192,7 @@ def get_start(fen):
         'trick_opp_line' : False,
         'popular' : False,
         'fen' : fen,
+        'mate' : board.is_checkmate(),
         'num_moves' : len(list(board.legal_moves)),
         'is_white' : active_is_white(board.fen()),
     }
