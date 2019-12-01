@@ -130,7 +130,7 @@ def engine_query(fen):
         move = c['move']
         c['name'] = board.san(board.parse_uci(move))
         board.push_uci(move)
-        c['score_group'] = 0 if c['value'] > .8 else (1 if c['value'] > .5 else 2)
+        c['score_group'] = 0 if c['value'] > .75 else (1 if c['value'] > .5 else 2)
         c['uci_move'] = move
         c['win_prob'] = cp_to_winrate(c['score'])
         c['parent_fen'] =  parent_fen
