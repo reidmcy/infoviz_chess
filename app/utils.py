@@ -8,6 +8,8 @@ import json
 import functools
 import os.path
 
+import numpy as np
+
 if sys.platform == 'darwin':
     engine_path = 'stockfish/stockfish-10-64'
 else:
@@ -150,10 +152,23 @@ def engine_query(fen):
         c['sort_index'] = i
     return c_ret
 
-@functools.lru_cache(maxsize = 1028)
-def get_children(fen):
+def remove_score(cache_result):
+    sort_indices = list(range(len(cache_result)))
+    np.random.shuffle(sort_indices)
+    for c in cache_result:
+        #c['score'] = 0.0
+        c['value'] = 1.0
+        #c['abs_score'] = 0.0
+        c['sort_index'] =sort_indices.pop()
+    return cache_result
+
+#@functools.lru_cache(maxsize = 1028)
+def get_children(fen, give_score):
+    print(give_score)
     global sf_cache
     try:
+        if not give_score:
+            return remove_score(sf_cache[fen])
         return sf_cache[fen]
     except KeyError:
         sf_cache[fen] = engine_query(fen)
@@ -163,7 +178,10 @@ def get_children(fen):
                         'data' : sf_cache[fen],
                         }, f)
             f.write('\n')
+        if not give_score:
+            return remove_score(sf_cache[fen])
         return sf_cache[fen]
+        return cache_result
     except TypeError:
         sf_cache = {}
         try:
@@ -173,10 +191,10 @@ def get_children(fen):
                     sf_cache[l_json['fen']] = l_json['data']
         except FileNotFoundError:
             pass
-        return get_children(fen)
+        return get_children(fen, give_score)
 
 
-def get_start(fen):
+def get_start(fen, give_score):
     board = chess.Board(fen)
     c = {
         'move': 'start',
@@ -197,7 +215,7 @@ def get_start(fen):
         'is_white' : active_is_white(board.fen()),
     }
     try:
-        c['children'] = get_children(fen)
+        c['children'] = get_children(fen, give_score)
     except chess.engine.EngineTerminatedError:
         c['children'] = 0
         c['num_moves'] = 0,

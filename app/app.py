@@ -8,6 +8,8 @@ import os.path
 import sys
 import json
 
+give_score = True
+
 app = flask.Flask('Chess')
 assets = flask_assets.Environment(app)
 
@@ -36,12 +38,12 @@ def root_fen(**fen_kwargs):
 @app.route("/board/<r1>/<r2>/<r3>/<r4>/<r5>/<r6>/<r7>/<r8>", methods = ['GET','POST'])
 def get_children(**fen_kwargs):
     fen = utils.get_fen(fen_kwargs)
-    return flask.Response(json.dumps(utils.get_children(fen)), mimetype='text/json')
+    return flask.Response(json.dumps(utils.get_children(fen, give_score)), mimetype='text/json')
 
 @app.route("/start/<r1>/<r2>/<r3>/<r4>/<r5>/<r6>/<r7>/<r8>", methods = ['GET','POST'])
 def start_fen(**fen_kwargs):
     fen = utils.get_fen(fen_kwargs)
-    return flask.Response(json.dumps(utils.get_start(fen)), mimetype='text/json')
+    return flask.Response(json.dumps(utils.get_start(fen, give_score)), mimetype='text/json')
 
 @app.route('/favicon.ico')
 def favicon():
@@ -51,7 +53,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Start the server', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('--port', default = 8805, help='port to run on')
+    parser.add_argument('--no_score', help='remove score from output', default = False, action='store_true')
     args = parser.parse_args()
+    give_score = not args.no_score
 
     if sys.platform == 'linux':
         app.run(host='0.0.0.0', debug=False, port=args.port)
